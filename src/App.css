@@ -18,3 +18,26 @@
   color: #09d3ac;
 }
 
+html, body, #app, #app>div {
+  height: 100%
+}
+.fill {
+  min-height: 100vh;
+}
+
+.sidenav {
+  height: 100vh;
+  width: 22vw;
+  float: left;
+}
+
+.barra {
+  margin: 1vh;
+  float:left;
+}
+
+.barra_texto {
+  padding-right: 0.5vw;
+  float:left;
+  color:white;
+}

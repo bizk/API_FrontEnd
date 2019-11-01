@@ -8,15 +8,18 @@ import axios from "axios";
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
+import UnidadList from "./components/UnidadList";
+
+
 class App extends React.Component {
   state ={
     contacts: []
   };
 
   componentDidMount() {
-    axios.get("").then(response => {
-      
-      //Array 
+    axios.get("https://jsonplaceholder.typicode.com/users").then(response => {
+
+      //Array
       const newContacts = response.data.map(c => {
         return {
           id: c.id,
@@ -78,10 +81,7 @@ class App extends React.Component {
                 <SideBar />
               </div>
               <div class="col-10 ">
-                <UnidadTab />
-                <UnidadTab />
-                <UnidadTab />
-                <Button>GetEdificios</Button>
+                <UnidadList contacts={this.state.contacts}/>
               </div>
             </div>
           </div>
@@ -101,25 +101,5 @@ class SideBar extends React.Component {
           <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Edificio2</a>
         </ul>
     );
-  }
-}
-
-class UnidadTab extends React.Component {
-  render () {
-      return (
-          <div class="m-1 d-flex p-1 bg-secondary rounded ">
-            <div class="barra_texto">
-              <img src="https://placekitten.com/64/64" class="img-responsive rounded barra"></img>
-            </div>
-            <div class="barra_texto">
-              <p class="h5 card-title">#ID</p>
-              <p class="barra_texto">#NombreEdif</p>
-              <p class="barra_texto">#Piso</p>
-              <p class="barra_texto">#Numero</p>
-              <p class="barra_texto">#Habilitado</p>
-              <p class="barra_texto">Propiedad 1</p>
-            </div>
-          </div>
-      );
   }
 }

@@ -15,9 +15,12 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "kiwi",
-      unidades: []
+      tab: "unidadesTab",
+      unidades: [],
+      isUnidades: true,
+      isReclamos: false,
     };  
+    this.changeToReclamos = this.changeToReclamos(bind);
   }
   
   componentDidMount() {
@@ -43,13 +46,21 @@ class App extends React.Component {
     }).catch(error=> console.log(error));
   };
 
+  changeToReclamos(e) {
+    const newState = Object.assign({}, this.state, {
+      tab: "reclamosTab"
+    });
+
+    this.setState(newState);
+  };
+
   render() {
     const tabPosition = this.state.tab;
     let bodyContainer;
 
-    if (tabPosition == "kiwi") {
+    if (tabPosition === "kiwi") {
       bodyContainer = <p> HOLA MUNDO >:C</p>;
-    } else if (tabPosition == "unidadesTab") {
+    } else if (tabPosition === "unidadesTab") {
       bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
     } else {
       bodyContainer = <div> D:</div>;
@@ -66,17 +77,11 @@ class App extends React.Component {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                      <a class="nav-link" href="#">Actual<span class="sr-only">(current)</span></a>
+                    <li class= {'nav-item ' + (this.state.isUnidades ? "active" : "")}>
+                      <Button class="nav-link">Unidades</Button>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Edificios</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Informacion</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Reclamos</a>
+                    <li class={"nav-item " + (this.state.isReclamos ? "active" : "")}>
+                      <Button class="nav-link" onClick={this.changeToReclamos}>Reclamos</Button>
                     </li>
                    </ul>
                    <ul class="navbar-nav nav-flex-icons">

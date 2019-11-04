@@ -1,0 +1,51 @@
+{
+  "unidades": [
+    {
+        "identificador": 1,
+        "piso": "N'10'",
+        "numero": "N'6'",
+        "habitado": "N'N'",
+        "codigoEdificio": 1
+    },
+    {
+        "identificador": 2,
+        "piso": "N'8'",
+        "numero": "N'3'",
+        "habitado": "N'Y'",
+        "codigoEdificio": 1
+    },
+    {
+        "identificador": 3,
+        "piso": "N'8'",
+        "numero": "N'4'",
+        "habitado": "N'N'",
+        "codigoEdificio": 2
+    }
+  ],
+  "edificios": [
+    {
+      "id": 1,
+      "nombre": "SLS Puerto Madero",
+      "direccion": "Mogliani 425"
+    },
+    {
+      "id": 2,
+      "nombre": "The Link Towers",
+      "direccion": "Arrayanes 1230"
+    }
+  ],
+  "personas": [
+    {
+      "documento": "CI 13230978",
+      "nombre": "BANEGAS, MAURICIO"
+    },
+    {
+      "documento": "DNI 12344567",
+      "nombre": "PARODI, FEDERICO"
+    },
+    {
+      "documento": "DNI 98765432",
+      "nombre": "YANZON, CARLOS SANTIAGO"
+    }
+  ]
+}

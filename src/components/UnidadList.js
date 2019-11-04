@@ -7,7 +7,8 @@ import UnidadTab from "./UnidadTab";
 function UnidadList (props) {
   return (
     <div class="container-fluid fill">
-      {props.contacts.map(c => <UnidadTab keys={c.id} name={c.name} />)}
+      {props.unidades.map(c => <UnidadTab keys={c.id} piso={c.piso} nummero={c.numero}
+        habitado={c.habitado} codigoEdificio={c.codigoEdificio} />)}
       <Button>GetEdificios</Button>
     </div>
   );

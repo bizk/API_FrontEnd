@@ -13,23 +13,26 @@ import UnidadList from "./components/UnidadList";
 
 class App extends React.Component {
   state ={
-    contacts: []
+    unidades: []
   };
 
   componentDidMount() {
-    axios.get("https://jsonplaceholder.typicode.com/users").then(response => {
+    axios.get("localhost:3000/unidades").then(response => {
 
       //Array
-      const newContacts = response.data.map(c => {
+      const newUnidades = response.data.map(c => {
         return {
           id: c.id,
-          name: c.name,
+          piso: c.piso,
+          numero: c.numero,
+          habitado: c.habitado,
+          codigoEdificio: c.codigoEdificio
         };
       });
 
       //Create a new state object
       const newState = Object.assign({}, this.state, {
-        contacts: newContacts
+        unidades: newUnidades
       });
 
       this.setState(newState);
@@ -81,7 +84,7 @@ class App extends React.Component {
                 <SideBar />
               </div>
               <div class="col-10 ">
-                <UnidadList contacts={this.state.contacts}/>
+                <UnidadList contacts={this.state.unidades}/>
               </div>
             </div>
           </div>

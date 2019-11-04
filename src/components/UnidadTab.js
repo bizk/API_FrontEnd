@@ -7,11 +7,11 @@ function UnidadTab (props){
           <img src="https://placekitten.com/64/64" class="img-responsive rounded barra"></img>
         </div>
         <div class="barra_texto">
-          <p class="h5 card-title">{props.name}</p>
-          <p class="barra_texto">#NombreEdif</p>
-          <p class="barra_texto">#Piso</p>
-          <p class="barra_texto">#Numero</p>
-          <p class="barra_texto">#Habilitado</p>
+          <p class="h5 card-title">{props.id}</p>
+          <p class="barra_texto">{props.codigoEdificio} nombre edif</p>
+          <p class="barra_texto">#Piso {props.piso}</p>
+          <p class="barra_texto">#Numero {props.numero}</p>
+          <p class="barra_texto">#Habilitado {props.habitado}</p>
           <p class="barra_texto">Propiedad 1</p>
         </div>
       </div>

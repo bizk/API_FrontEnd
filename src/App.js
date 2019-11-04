@@ -12,66 +12,83 @@ import UnidadList from "./components/UnidadList";
 
 
 class App extends React.Component {
-  state ={
-    contacts: []
-  };
+  constructor(props) {
+    super(props);
+    this.state ={
+      tab: "unidadesTab",
+      unidades: [],
+      isUnidades: true,
+      isReclamos: false,
+    };
 
+    // this.handleClickReclamosTab = this.handleClickReclamosTab.bind(this);
+  }
+
+  //Fetching data after loading the page
   componentDidMount() {
-    axios.get("https://jsonplaceholder.typicode.com/users").then(response => {
+    axios.get("http://localhost:3001/unidades").then(response => {
 
       //Array
-      const newContacts = response.data.map(c => {
+      const newUnidades = response.data.map(c => {
         return {
-          id: c.id,
-          name: c.name,
+          identificador: c.identificador,
+          piso: c.piso,
+          numero: c.numero,
+          habitado: c.habitado,
+          codigoEdificio: c.codigoEdificio
         };
       });
 
       //Create a new state object
       const newState = Object.assign({}, this.state, {
-        contacts: newContacts
+        unidades: newUnidades
       });
 
       this.setState(newState);
     }).catch(error=> console.log(error));
+  };
+
+  //Buttons handlers
+  handleClickReclamosTab(e) {
+    this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true}));
+  }
+  handleClickUnidadesTab(e) {
+    this.setState(state => ({ tab: "unidadesTab", isUnidades: true, isReclamos: false}));
   }
 
   render() {
+    const tabPosition = this.state.tab;
+    let bodyContainer;
+
+    //Dymamic generation of components inside the body container
+    if (tabPosition === "unidadesTab") {
+      bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
+    } else if (tabPosition === "reclamosTab") {
+      bodyContainer = <p> HOLA MUNDO >:C</p>;
+    } else {
+      bodyContainer = <div> Error 404</div>;
+    };
+
     return (
-      <html classname="">
+      <div>
           <header className="App-header">
             <Nav class="navbar fixed-top navbar-expand-lg navbar-dark pink scrolling-navbar App-header">
-              <a class="navbar-brand" href="#"><strong>API</strong></a>
+              <a class="navbar-brand" href="/"><strong>API</strong></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                   aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                      <a class="nav-link" href="#">Actual<span class="sr-only">(current)</span></a>
+                    <li class= "nav-item">
+                      <button type="button" class={"btn " + (this.state.isUnidades ? "btn-secondary" : "btn-dark")}
+                              onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Edificios</a>
+                    <li class={"nav-item "}>
+                      <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}
+                              onClick={this.handleClickReclamosTab.bind(this)}>Reclamos</button>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Informacion</a>
-                    </li>
-                    <li class="nav-item">
-                      <a class="nav-link" href="#">Reclamos</a>
-                    </li>
-                   </ul>
-                   <ul class="navbar-nav nav-flex-icons">
-                     <li class="nav-item">
-                       <a class="nav-link"><i class="fab fa-facebook-f"></i></a>
-                     </li>
-                     <li class="nav-item">
-                       <a class="nav-link"><i class="fab fa-twitter"></i></a>
-                     </li>
-                     <li class="nav-item">
-                       <a class="nav-link"><i class="fab fa-instagram"></i></a>
-                     </li>
-                   </ul>
+                  </ul>
                  </div>
             </Nav>
           </header>
@@ -81,11 +98,11 @@ class App extends React.Component {
                 <SideBar />
               </div>
               <div class="col-10 ">
-                <UnidadList contacts={this.state.contacts}/>
+                {bodyContainer}
               </div>
             </div>
           </div>
-      </html>
+      </div>
     );
   }
 }

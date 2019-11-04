@@ -7,7 +7,7 @@ function UnidadTab (props){
           <img src="https://placekitten.com/64/64" class="img-responsive rounded barra"></img>
         </div>
         <div class="barra_texto">
-          <p class="h5 card-title">{props.id}</p>
+          <p class="h5 card-title">{props.identificador}</p>
           <p class="barra_texto">{props.codigoEdificio} nombre edif</p>
           <p class="barra_texto">#Piso {props.piso}</p>
           <p class="barra_texto">#Numero {props.numero}</p>

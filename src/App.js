@@ -17,12 +17,12 @@ class App extends React.Component {
   };
 
   componentDidMount() {
-    axios.get("localhost:3000/unidades").then(response => {
+    axios.get("http://localhost:3001/unidades").then(response => {
 
       //Array
       const newUnidades = response.data.map(c => {
         return {
-          id: c.id,
+          identificador: c.identificador,
           piso: c.piso,
           numero: c.numero,
           habitado: c.habitado,
@@ -41,10 +41,10 @@ class App extends React.Component {
 
   render() {
     return (
-      <html classname="">
+      <div>
           <header className="App-header">
             <Nav class="navbar fixed-top navbar-expand-lg navbar-dark pink scrolling-navbar App-header">
-              <a class="navbar-brand" href="#"><strong>API</strong></a>
+              <a class="navbar-brand" href="/"><strong>API</strong></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
                   aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                   <span class="navbar-toggler-icon"></span>
@@ -84,11 +84,11 @@ class App extends React.Component {
                 <SideBar />
               </div>
               <div class="col-10 ">
-                <UnidadList contacts={this.state.unidades}/>
+                <UnidadList unidades={this.state.unidades}/>
               </div>
             </div>
           </div>
-      </html>
+      </div>
     );
   }
 }

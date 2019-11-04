@@ -12,10 +12,14 @@ import UnidadList from "./components/UnidadList";
 
 
 class App extends React.Component {
-  state ={
-    unidades: []
-  };
-
+  constructor(props) {
+    super(props);
+    this.state ={
+      tab: "kiwi",
+      unidades: []
+    };  
+  }
+  
   componentDidMount() {
     axios.get("http://localhost:3001/unidades").then(response => {
 
@@ -37,9 +41,20 @@ class App extends React.Component {
 
       this.setState(newState);
     }).catch(error=> console.log(error));
-  }
+  };
 
   render() {
+    const tabPosition = this.state.tab;
+    let bodyContainer;
+
+    if (tabPosition == "kiwi") {
+      bodyContainer = <p> HOLA MUNDO >:C</p>;
+    } else if (tabPosition == "unidadesTab") {
+      bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
+    } else {
+      bodyContainer = <div> D:</div>;
+    };
+
     return (
       <div>
           <header className="App-header">
@@ -84,7 +99,7 @@ class App extends React.Component {
                 <SideBar />
               </div>
               <div class="col-10 ">
-                <UnidadList unidades={this.state.unidades}/>
+                {bodyContainer}
               </div>
             </div>
           </div>
@@ -106,3 +121,4 @@ class SideBar extends React.Component {
     );
   }
 }
+

@@ -19,10 +19,12 @@ class App extends React.Component {
       unidades: [],
       isUnidades: true,
       isReclamos: false,
-    };  
-    this.changeToReclamos = this.changeToReclamos(bind);
+    };
+
+    // this.handleClickReclamosTab = this.handleClickReclamosTab.bind(this);
   }
-  
+
+  //Fetching data after loading the page
   componentDidMount() {
     axios.get("http://localhost:3001/unidades").then(response => {
 
@@ -46,24 +48,25 @@ class App extends React.Component {
     }).catch(error=> console.log(error));
   };
 
-  changeToReclamos(e) {
-    const newState = Object.assign({}, this.state, {
-      tab: "reclamosTab"
-    });
-
-    this.setState(newState);
-  };
+  //Buttons handlers
+  handleClickReclamosTab(e) {
+    this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true}));
+  }
+  handleClickUnidadesTab(e) {
+    this.setState(state => ({ tab: "unidadesTab", isUnidades: true, isReclamos: false}));
+  }
 
   render() {
     const tabPosition = this.state.tab;
     let bodyContainer;
 
-    if (tabPosition === "kiwi") {
-      bodyContainer = <p> HOLA MUNDO >:C</p>;
-    } else if (tabPosition === "unidadesTab") {
+    //Dymamic generation of components inside the body container
+    if (tabPosition === "unidadesTab") {
       bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
+    } else if (tabPosition === "reclamosTab") {
+      bodyContainer = <p> HOLA MUNDO >:C</p>;
     } else {
-      bodyContainer = <div> D:</div>;
+      bodyContainer = <div> Error 404</div>;
     };
 
     return (
@@ -77,24 +80,15 @@ class App extends React.Component {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
-                    <li class= {'nav-item ' + (this.state.isUnidades ? "active" : "")}>
-                      <Button class="nav-link">Unidades</Button>
+                    <li class= "nav-item">
+                      <button type="button" class={"btn " + (this.state.isUnidades ? "btn-secondary" : "btn-dark")}
+                              onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
                     </li>
-                    <li class={"nav-item " + (this.state.isReclamos ? "active" : "")}>
-                      <Button class="nav-link" onClick={this.changeToReclamos}>Reclamos</Button>
+                    <li class={"nav-item "}>
+                      <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}
+                              onClick={this.handleClickReclamosTab.bind(this)}>Reclamos</button>
                     </li>
-                   </ul>
-                   <ul class="navbar-nav nav-flex-icons">
-                     <li class="nav-item">
-                       <a class="nav-link"><i class="fab fa-facebook-f"></i></a>
-                     </li>
-                     <li class="nav-item">
-                       <a class="nav-link"><i class="fab fa-twitter"></i></a>
-                     </li>
-                     <li class="nav-item">
-                       <a class="nav-link"><i class="fab fa-instagram"></i></a>
-                     </li>
-                   </ul>
+                  </ul>
                  </div>
             </Nav>
           </header>
@@ -126,4 +120,3 @@ class SideBar extends React.Component {
     );
   }
 }
-

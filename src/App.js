@@ -4,9 +4,14 @@ import './App.css';
 
 import axios from "axios";
 
+import AgregarReclamoModal from "./components/AgregarReclamoModal";
+
 // import UnidadTab from './Components.js';
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
+
+//Essto no va a ir aca
+
 
 import UnidadList from "./components/UnidadList";
 
@@ -14,13 +19,15 @@ import UnidadList from "./components/UnidadList";
 class App extends React.Component {
   constructor(props) {
     super(props);
+
     this.state ={
       tab: "unidadesTab",
       unidades: [],
       isUnidades: true,
       isReclamos: false,
-    };
 
+      isOpenAgregarReclamoModal: true
+    };
     // this.handleClickReclamosTab = this.handleClickReclamosTab.bind(this);
   }
 
@@ -56,15 +63,29 @@ class App extends React.Component {
     this.setState(state => ({ tab: "unidadesTab", isUnidades: true, isReclamos: false}));
   }
 
+  toggleAgregarReclamoModal() {
+    this.setState(state => ({
+      isOpenAgregarReclamoModal: !this.state.isOpenAgregarReclamoModal
+    }));
+  }
+
   render() {
     const tabPosition = this.state.tab;
     let bodyContainer;
 
     //Dymamic generation of components inside the body container
-    if (tabPosition === "unidadesTab") {
-      bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
-    } else if (tabPosition === "reclamosTab") {
-      bodyContainer = <p> HOLA MUNDO >:C</p>;
+    // if (tabPosition === "reclamosTab") {
+    //   bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
+    // } else
+     if (tabPosition === "unidadesTab") {
+      bodyContainer = <div>
+        <p> HOLA MUNDO >:C</p>
+        {this.state.isOpenAgregarReclamoModal ? 
+          <AgregarReclamoModal />
+          : null
+        }
+        <Button variant="info" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar +</Button>
+      </div>;
     } else {
       bodyContainer = <div> Error 404</div>;
     };

@@ -10,9 +10,7 @@ import AgregarReclamoModal from "./components/AgregarReclamoModal";
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
-//Essto no va a ir aca
-
-
+import UsuarioList from "./components/UsuarioList";
 import UnidadList from "./components/UnidadList";
 
 
@@ -23,6 +21,7 @@ class App extends React.Component {
     this.state ={
       tab: "unidadesTab",
       unidades: [],
+      personas: [],
       isUnidades: true,
       isReclamos: false,
 
@@ -33,8 +32,21 @@ class App extends React.Component {
 
   //Fetching data after loading the page
   componentDidMount() {
-    axios.get("http://localhost:3001/unidades").then(response => {
+    axios.get("http://localhost:3001/personas").then(response => {
+      const newPersonas = response.data.map(c => {
+        return{
+          nombre: c.nombre,
+          documento: c.documento
+        };
+      });
 
+      let newState = Object.assign({},this.state, {
+        personas: newPersonas
+      })
+      this.setState(newState)
+    }).catch(error => console.log(error));
+
+    axios.get("http://localhost:3001/unidades").then(response => {
       //Array
       const newUnidades = response.data.map(c => {
         return {
@@ -47,12 +59,13 @@ class App extends React.Component {
       });
 
       //Create a new state object
-      const newState = Object.assign({}, this.state, {
+      let newState = Object.assign({}, this.state, {
         unidades: newUnidades
       });
 
       this.setState(newState);
     }).catch(error=> console.log(error));
+  
   };
 
   //Buttons handlers
@@ -78,8 +91,8 @@ class App extends React.Component {
     //   bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
     // } else
      if (tabPosition === "unidadesTab") {
-      bodyContainer = <div>
-        <p> HOLA MUNDO >:C</p>
+      bodyContainer = <div >
+        <UsuarioList />
         {this.state.isOpenAgregarReclamoModal ? 
           <AgregarReclamoModal />
           : null
@@ -118,7 +131,7 @@ class App extends React.Component {
               <div class="col-2 hidden-md-down bg-dark">
                 <SideBar />
               </div>
-              <div class="col-10 ">
+              <div class="col-10 fill">
                 {bodyContainer}
               </div>
             </div>

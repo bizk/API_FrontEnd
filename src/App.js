@@ -19,11 +19,12 @@ class App extends React.Component {
     super(props);
 
     this.state ={
-      tab: "unidadesTab",
+      tab: "personasTab",
       unidades: [],
       personas: [],
-      isUnidades: true,
+      isUnidades: false,
       isReclamos: false,
+      isPersonas: true,
 
       isOpenAgregarReclamoModal: true
     };
@@ -65,15 +66,29 @@ class App extends React.Component {
 
       this.setState(newState);
     }).catch(error=> console.log(error));
-  
+
   };
 
   //Buttons handlers
   handleClickReclamosTab(e) {
-    this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true}));
+    this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true, isPersonas: false}));
   }
   handleClickUnidadesTab(e) {
-    this.setState(state => ({ tab: "unidadesTab", isUnidades: true, isReclamos: false}));
+    this.setState(state => ({ tab: "unidadesTab", isUnidades: true, isReclamos: false, isPersonas: false}));
+  }
+  handleClickPersonasTab(e) {
+    this.setState(state => ({ tab: "personasTab", isUnidades: false, isReclamos: false, isPersonas: true}));
+  }
+
+
+  handleClickHabilitadosEdif(e){
+    console.log("Habilitados por edificio")
+  }
+  handleClickDueniosEdif(e){
+    console.log("Duenios por edificio")
+  }
+  handleClickHabitantesEdif(e){
+    console.log("Habitantes por edificio")
   }
 
   toggleAgregarReclamoModal() {
@@ -87,13 +102,15 @@ class App extends React.Component {
     let bodyContainer;
 
     //Dymamic generation of components inside the body container
-    // if (tabPosition === "reclamosTab") {
-    //   bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
-    // } else
-     if (tabPosition === "unidadesTab") {
-      bodyContainer = <div >
+    if (tabPosition === "reclamosTab") {
+      bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
+    } else if (tabPosition === "personasTab") {
+      bodyContainer = <div class="mt-2">
+        <button type="button" class="btn btn-secondary" onClick={this.handleClickHabilitadosEdif.bind(this)}>Habilitados</button>
+        <button type="button" class="btn btn-secondary" onClick={this.handleClickDueniosEdif.bind(this)}>Duenios</button>
+        <button type="button" class="btn btn-secondary" onClick={this.handleClickHabitantesEdif.bind(this)}>Habitantes</button>
         <UsuarioList />
-        {this.state.isOpenAgregarReclamoModal ? 
+        {this.state.isOpenAgregarReclamoModal ?
           <AgregarReclamoModal />
           : null
         }
@@ -117,6 +134,10 @@ class App extends React.Component {
                     <li class= "nav-item">
                       <button type="button" class={"btn " + (this.state.isUnidades ? "btn-secondary" : "btn-dark")}
                               onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
+                    </li>
+                    <li class={"nav-item "}>
+                      <button type="button" class={"btn " + (this.state.isPersonas ? "btn-secondary" : "btn-dark")}
+                              onClick={this.handleClickPersonasTab.bind(this)}>Personas</button>
                     </li>
                     <li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}

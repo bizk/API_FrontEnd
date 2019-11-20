@@ -4,10 +4,8 @@ import UsuarioTab from './UsuarioTab'
 
 export default function UsuarioList(props) {
     return(
-        <div>
-            <UsuarioTab />
-            <UsuarioTab />
-            <UsuarioTab />
+        <div class="col-12 mt-2">
+            {props.personas.map(c => <UsuarioTab keys={c.id} nombre={c.nombre} documento={c.documento}/>)}
         </div>
     );
 }

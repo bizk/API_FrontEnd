@@ -1,6 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header.js'
+import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
@@ -12,12 +14,24 @@ import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
 import UsuarioList from "./components/UsuarioList";
 import UnidadList from "./components/UnidadList";
-
+import ReclamoList from "./components/ReclamoList";
+import UsuariosContainer from "./components/UsuariosContainer";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
 
+// componentDidMount() {
+//  fetch('http://localhost:8080/apiRest/reclamosPorEdificio?codigo=1')
+ // .then((res) => res.json()).then((json) => {
+ //    this.setState({
+ //    posts: json,
+ //   });
+
+ // }).catch((error) =>{
+   // alert("Error en API" + error);
+//  });
+//}
     this.state ={
       tab: "personasTab",
       unidades: [],
@@ -33,20 +47,12 @@ class App extends React.Component {
 
   //Fetching data after loading the page
   componentDidMount() {
-    axios.get("http://localhost:3001/personas").then(response => {
-      const newPersonas = response.data.map(c => {
-        return{
-          nombre: c.nombre,
-          documento: c.documento
-        };
-      });
+    this.fetchUnidades();
+    this.fetchPersonas();
+  };
 
-      let newState = Object.assign({},this.state, {
-        personas: newPersonas
-      })
-      this.setState(newState)
-    }).catch(error => console.log(error));
 
+  fetchUnidades(e){
     axios.get("http://localhost:3001/unidades").then(response => {
       //Array
       const newUnidades = response.data.map(c => {
@@ -66,8 +72,27 @@ class App extends React.Component {
 
       this.setState(newState);
     }).catch(error=> console.log(error));
+  }
 
-  };
+  fetchPersonas(e) {
+    axios.get("http://localhost:3001/personas").then(response => {
+      //Array
+      const newPersonas = response.data.map(c => {
+        return {
+          id: c.id,
+          documento: c.documento,
+          nombre: c.nombre,
+        };
+      });
+
+      //Create a new state object
+      let newState = Object.assign({}, this.state, {
+        personas: newPersonas
+      });
+
+      this.setState(newState);
+    }).catch(error=> console.log(error));
+  }
 
   //Buttons handlers
   handleClickReclamosTab(e) {
@@ -78,17 +103,6 @@ class App extends React.Component {
   }
   handleClickPersonasTab(e) {
     this.setState(state => ({ tab: "personasTab", isUnidades: false, isReclamos: false, isPersonas: true}));
-  }
-
-
-  handleClickHabilitadosEdif(e){
-    console.log("Habilitados por edificio")
-  }
-  handleClickDueniosEdif(e){
-    console.log("Duenios por edificio")
-  }
-  handleClickHabitantesEdif(e){
-    console.log("Habitantes por edificio")
   }
 
   toggleAgregarReclamoModal() {
@@ -105,19 +119,15 @@ class App extends React.Component {
     if (tabPosition === "reclamosTab") {
       bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
     } else if (tabPosition === "personasTab") {
-      bodyContainer = <div class="mt-2">
-        <button type="button" class="btn btn-secondary" onClick={this.handleClickHabilitadosEdif.bind(this)}>Habilitados</button>
-        <button type="button" class="btn btn-secondary" onClick={this.handleClickDueniosEdif.bind(this)}>Duenios</button>
-        <button type="button" class="btn btn-secondary" onClick={this.handleClickHabitantesEdif.bind(this)}>Habitantes</button>
-        <UsuarioList />
+      bodyContainer = <UsuariosContainer/>;
+    } else {
+      bodyContainer = <div>
         {this.state.isOpenAgregarReclamoModal ?
           <AgregarReclamoModal />
           : null
         }
         <Button variant="info" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar +</Button>
       </div>;
-    } else {
-      bodyContainer = <div> Error 404</div>;
     };
 
     return (
@@ -147,6 +157,7 @@ class App extends React.Component {
                  </div>
             </Nav>
           </header>
+
           <div class="container-fluid fill">
             <div class="row justify-content-center h-100">
               <div class="col-2 hidden-md-down bg-dark">
@@ -163,15 +174,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-class SideBar extends React.Component {
-  render() {
-    return (
-        <ul class="list-group d-flex ">
-          <a href="#" class="list-group-item active bg-secondary text-white">Edificios</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Edificio1</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Edificio2</a>
-        </ul>
-    );
-  }
-}

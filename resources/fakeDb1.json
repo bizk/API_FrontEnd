@@ -20,6 +20,13 @@
         "numero": "N'4'",
         "habitado": "N'N'",
         "codigoEdificio": 2
+    },
+    {
+        "identificador": 10,
+        "piso": "N'1'",
+        "numero": "N'1'",
+        "habitado": "N'N'",
+        "codigoEdificio": 2
     }
   ],
   "edificios": [
@@ -50,6 +57,32 @@
     {
       "documento": "DNI 11032019",
       "nombre": "l4gr4ng3 blu"
+    }
+  ],
+  "habilitados": [
+    {
+      "documento": "DNI 11032019",
+      "nombre": "l4gr4ng3 blu"
+    }
+  ],
+  "duenios": [
+    {
+      "documento": "DNI 12344567",
+      "nombre": "PARODI, FEDERICO"
+    },
+    {
+      "documento": "DNI 98765432",
+      "nombre": "YANZON, CARLOS SANTIAGO"
+    }
+  ],
+  "habitantes": [
+    {
+      "documento": "CI 13230978",
+      "nombre": "BANEGAS, MAURICIO"
+    },
+    {
+      "documento": "DNI 12344567",
+      "nombre": "PARODI, FEDERICO"
     }
   ]
 }

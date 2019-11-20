@@ -6,17 +6,21 @@ import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
+import AgregarReclamoModal from "./components/AgregarReclamoModal";
+
 // import UnidadTab from './Components.js';
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
+import UsuarioList from "./components/UsuarioList";
 import UnidadList from "./components/UnidadList";
 import ReclamoList from "./components/ReclamoList";
-
+import UsuariosContainer from "./components/UsuariosContainer";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+
 // componentDidMount() {
 //  fetch('http://localhost:8080/apiRest/reclamosPorEdificio?codigo=1')
  // .then((res) => res.json()).then((json) => {
@@ -29,19 +33,27 @@ class App extends React.Component {
 //  });
 //}
     this.state ={
-      tab: "unidadesTab",
+      tab: "personasTab",
       unidades: [],
-      isUnidades: true,
+      personas: [],
+      isUnidades: false,
       isReclamos: false,
-    };
+      isPersonas: true,
 
+      isOpenAgregarReclamoModal: true
+    };
     // this.handleClickReclamosTab = this.handleClickReclamosTab.bind(this);
   }
 
   //Fetching data after loading the page
   componentDidMount() {
-    axios.get("http://localhost:3001/unidades").then(response => {
+    this.fetchUnidades();
+    this.fetchPersonas();
+  };
 
+
+  fetchUnidades(e){
+    axios.get("http://localhost:3001/unidades").then(response => {
       //Array
       const newUnidades = response.data.map(c => {
         return {
@@ -54,20 +66,49 @@ class App extends React.Component {
       });
 
       //Create a new state object
-      const newState = Object.assign({}, this.state, {
+      let newState = Object.assign({}, this.state, {
         unidades: newUnidades
       });
 
       this.setState(newState);
     }).catch(error=> console.log(error));
-  };
+  }
+
+  fetchPersonas(e) {
+    axios.get("http://localhost:3001/personas").then(response => {
+      //Array
+      const newPersonas = response.data.map(c => {
+        return {
+          id: c.id,
+          documento: c.documento,
+          nombre: c.nombre,
+        };
+      });
+
+      //Create a new state object
+      let newState = Object.assign({}, this.state, {
+        personas: newPersonas
+      });
+
+      this.setState(newState);
+    }).catch(error=> console.log(error));
+  }
 
   //Buttons handlers
   handleClickReclamosTab(e) {
-    this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true}));
+    this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true, isPersonas: false}));
   }
   handleClickUnidadesTab(e) {
-    this.setState(state => ({ tab: "unidadesTab", isUnidades: true, isReclamos: false}));
+    this.setState(state => ({ tab: "unidadesTab", isUnidades: true, isReclamos: false, isPersonas: false}));
+  }
+  handleClickPersonasTab(e) {
+    this.setState(state => ({ tab: "personasTab", isUnidades: false, isReclamos: false, isPersonas: true}));
+  }
+
+  toggleAgregarReclamoModal() {
+    this.setState(state => ({
+      isOpenAgregarReclamoModal: !this.state.isOpenAgregarReclamoModal
+    }));
   }
 
   render() {
@@ -75,12 +116,18 @@ class App extends React.Component {
     let bodyContainer;
 
     //Dymamic generation of components inside the body container
-    if (tabPosition === "unidadesTab") {
+    if (tabPosition === "reclamosTab") {
       bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
-    } else if (tabPosition === "reclamosTab") {
-      bodyContainer = <p> HOLA MUNDO >:C</p>;
+    } else if (tabPosition === "personasTab") {
+      bodyContainer = <UsuariosContainer/>;
     } else {
-      bodyContainer = <div> Error 404</div>;
+      bodyContainer = <div>
+        {this.state.isOpenAgregarReclamoModal ?
+          <AgregarReclamoModal />
+          : null
+        }
+        <Button variant="info" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar +</Button>
+      </div>;
     };
 
     return (
@@ -99,6 +146,10 @@ class App extends React.Component {
                               onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
                     </li>
                     <li class={"nav-item "}>
+                      <button type="button" class={"btn " + (this.state.isPersonas ? "btn-secondary" : "btn-dark")}
+                              onClick={this.handleClickPersonasTab.bind(this)}>Personas</button>
+                    </li>
+                    <li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}
                               onClick={this.handleClickReclamosTab.bind(this)}>Reclamos</button>
                     </li>
@@ -109,9 +160,10 @@ class App extends React.Component {
 
           <div class="container-fluid fill">
             <div class="row justify-content-center h-100">
-              <SideBar usr={this.state.usr} />
-
-              <div class="col-10 ">
+              <div class="col-2 hidden-md-down bg-dark">
+                <SideBar />
+              </div>
+              <div class="col-10 fill">
                 {bodyContainer}
               </div>
             </div>
@@ -122,5 +174,3 @@ class App extends React.Component {
 }
 
 export default App;
-
-

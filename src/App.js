@@ -17,58 +17,106 @@ import ReclamoList from "./components/ReclamoList";
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state  = {
-      usr : this.props.usr,
-      posts: []}
- }
+// componentDidMount() {
+//  fetch('http://localhost:8080/apiRest/reclamosPorEdificio?codigo=1')
+ // .then((res) => res.json()).then((json) => {
+ //    this.setState({
+ //    posts: json,
+ //   });
 
- componentDidMount() {
-  fetch('http://localhost:8080/apiRest/reclamosPorEdificio?codigo=1')
-  .then((res) => res.json()).then((json) => {
-     this.setState({
-     posts: json,
-    });
+ // }).catch((error) =>{
+   // alert("Error en API" + error);
+//  });
+//}
+    this.state ={
+      tab: "unidadesTab",
+      unidades: [],
+      isUnidades: true,
+      isReclamos: false,
+    };
 
-  }).catch((error) =>{
-    alert("Error en API" + error);
-  });
-}
+    // this.handleClickReclamosTab = this.handleClickReclamosTab.bind(this);
+  }
 
-    //Array
-      // const newPosts = response.data.map(p => {
-      //   return {
-      //     numero: p.numero,
-      //     usuario: p.usuario,
-      //     ubicacion: p.ubicacion,
-      //     descripcion:p.descripcion,
-      //     unidad: p.unidad,
-      //     estado:p.estado,
-      //     imagenes: p.imagenes
-      //   };
-   
+  //Fetching data after loading the page
+  componentDidMount() {
+    axios.get("http://localhost:3001/unidades").then(response => {
 
-      // //Create a new state object
-      // const newState = Object.assign({}, this.state, {
-      //   posts: newPosts()
-      // });
+      //Array
+      const newUnidades = response.data.map(c => {
+        return {
+          identificador: c.identificador,
+          piso: c.piso,
+          numero: c.numero,
+          habitado: c.habitado,
+          codigoEdificio: c.codigoEdificio
+        };
+      });
 
-     
- 
+      //Create a new state object
+      const newState = Object.assign({}, this.state, {
+        unidades: newUnidades
+      });
+
+      this.setState(newState);
+    }).catch(error=> console.log(error));
+  };
+
+  //Buttons handlers
+  handleClickReclamosTab(e) {
+    this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true}));
+  }
+  handleClickUnidadesTab(e) {
+    this.setState(state => ({ tab: "unidadesTab", isUnidades: true, isReclamos: false}));
+  }
 
   render() {
+    const tabPosition = this.state.tab;
+    let bodyContainer;
+
+    //Dymamic generation of components inside the body container
+    if (tabPosition === "unidadesTab") {
+      bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
+    } else if (tabPosition === "reclamosTab") {
+      bodyContainer = <p> HOLA MUNDO >:C</p>;
+    } else {
+      bodyContainer = <div> Error 404</div>;
+    };
+
     return (
-      <html className="">
-         <Header></Header>
+      <div>
+          <header className="App-header">
+            <Nav class="navbar fixed-top navbar-expand-lg navbar-dark pink scrolling-navbar App-header">
+              <a class="navbar-brand" href="/"><strong>API</strong></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                  <ul class="navbar-nav mr-auto">
+                    <li class= "nav-item">
+                      <button type="button" class={"btn " + (this.state.isUnidades ? "btn-secondary" : "btn-dark")}
+                              onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
+                    </li>
+                    <li class={"nav-item "}>
+                      <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}
+                              onClick={this.handleClickReclamosTab.bind(this)}>Reclamos</button>
+                    </li>
+                  </ul>
+                 </div>
+            </Nav>
+          </header>
+
           <div class="container-fluid fill">
             <div class="row justify-content-center h-100">
               <SideBar usr={this.state.usr} />
 
               <div class="col-10 ">
-                <ReclamoList posts = {this.state.posts}/>
+                {bodyContainer}
               </div>
             </div>
           </div>
-      </html>
+      </div>
     );
   }
 }

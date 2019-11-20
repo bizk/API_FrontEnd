@@ -1,6 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import Header from './components/Header.js'
+import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
@@ -9,11 +11,23 @@ import axios from "axios";
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
 import UnidadList from "./components/UnidadList";
+import ReclamoList from "./components/ReclamoList";
 
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+// componentDidMount() {
+//  fetch('http://localhost:8080/apiRest/reclamosPorEdificio?codigo=1')
+ // .then((res) => res.json()).then((json) => {
+ //    this.setState({
+ //    posts: json,
+ //   });
+
+ // }).catch((error) =>{
+   // alert("Error en API" + error);
+//  });
+//}
     this.state ={
       tab: "unidadesTab",
       unidades: [],
@@ -92,11 +106,11 @@ class App extends React.Component {
                  </div>
             </Nav>
           </header>
+
           <div class="container-fluid fill">
             <div class="row justify-content-center h-100">
-              <div class="col-2 hidden-md-down bg-dark">
-                <SideBar />
-              </div>
+              <SideBar usr={this.state.usr} />
+
               <div class="col-10 ">
                 {bodyContainer}
               </div>
@@ -109,14 +123,4 @@ class App extends React.Component {
 
 export default App;
 
-class SideBar extends React.Component {
-  render() {
-    return (
-        <ul class="list-group d-flex ">
-          <a href="#" class="list-group-item active bg-secondary text-white">Edificios</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Edificio1</a>
-          <a href="#" class="list-group-item list-group-item-action bg-dark text-white">Edificio2</a>
-        </ul>
-    );
-  }
-}
+

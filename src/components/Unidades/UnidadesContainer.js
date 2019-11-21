@@ -12,7 +12,6 @@ export default class UnidadesContainer extends React.Component {
       numero:"",
       dni:""
     }
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
   componentDidMount() {
@@ -23,6 +22,27 @@ export default class UnidadesContainer extends React.Component {
     axios.get("http://localhost:3001/unidades").then(response => {
       //Array
       const newUnidades = response.data.map(c => {
+        return {
+          identificador: c.identificador,
+          piso: c.piso,
+          numero: c.numero,
+          habitado: c.habitado,
+          codigoEdificio: c.codigoEdificio
+        };
+      });
+
+      //Create a new state object
+      let newState = Object.assign({}, this.state, {
+        unidades: newUnidades
+      });
+
+      this.setState(newState);
+    }).catch(error=> console.log(error));
+  }
+  fetchUnidad(){
+    axios.get("http://localhost:3001/unidades").then(response => {
+      //Array
+      let newUnidades = response.data.map(c => {
         return {
           identificador: c.identificador,
           piso: c.piso,
@@ -51,9 +71,47 @@ export default class UnidadesContainer extends React.Component {
     this.setState({dni: event.target.value})
   }
 
-  handleSubmit(event) {
+  genericPutFetch3Param(url){
+    const params = {
+      piso: this.state.piso,
+      numero: this.state.numero,
+      dni: this.state.dni,
+    }
+    axios.post(url, {params}).catch(error=> console.log(error));
+  }
+
+  handleSubmitDuenios(event) {
     alert(this.state.piso + " " + this.state.numero + " " + this.state.dni)
+    //Aca se llama al fetch de esa unidad y el fetch de los usuarios
     event.preventDefault()
+  }
+  handleSubmitInquilinos(event) {
+    alert("fetch inquilinos");
+    event.preventDefault();
+  }
+  handleSubmitTransUnidad(event) {
+    this.genericPutFetch3Param("http://localhost:3001/transferirUnidad")
+    event.preventDefault();
+  }
+  handleSubmitAddDuenio(event) {
+    this.genericPutFetch3Param("http://localhost:3001/");
+    event.preventDefault();
+  }
+  handleSubmitAlquilar(event) {
+    this.genericPutFetch3Param("http://localhost:3001/");
+    event.preventDefault();
+  }
+  handleSubmitAddInquilino(event) {
+    this.genericPutFetch3Param("http://localhost:3001/");
+    event.preventDefault();
+  }
+  handleSubmitLiberar(event) {
+    this.genericPutFetch3Param("http://localhost:3001/");
+    event.preventDefault();
+  }
+  handleSubmitHabitar(event) {
+    this.genericPutFetch3Param("http://localhost:3001/");
+    event.preventDefault();
   }
 
   render() {
@@ -90,28 +148,28 @@ export default class UnidadesContainer extends React.Component {
             </div>
             <div class="form-grup col-md-3">
               <button type="submitDueños" class="btn btn-info btn-block"
-                onClick={this.handleSubmit}>Ver dueños</button>
+                onClick={this.handleSubmitDuenios.bind(this)}>Ver dueños</button>
             </div>
             <div class="form-grup col-md-3">
-              <button type="submitInquilinos" class="btn btn-info btn-block ">Ver inquilinos</button>
+              <button type="submitInquilinos" class="btn btn-info btn-block" onClick={this.handleSubmitInquilinos.bind(this)}>Ver inquilinos</button>
             </div>
             <div class="form-grup col-md-3">
-              <button type="submitTransferir" class="btn btn-primary btn-block ">Transferir unidad</button>
+              <button type="submitTransferir" class="btn btn-primary btn-block" onClick={this.handleSubmitTransUnidad.bind(this)}>Transferir unidad</button>
             </div>
             <div class="form-grup col-md-3">
-              <button type="submitAgregarDuenio" class="btn btn-primary btn-block ">Agregar Duenio</button>
+              <button type="submitAgregarDuenio" class="btn btn-primary btn-block" onClick={this.handleSubmitAddDuenio.bind(this)}>Agregar Duenio</button>
             </div>
             <div class="form-grup col-md-3 mt-2">
-              <button type="submitAlquilar" class="btn btn-primary btn-block ">Alquilar</button>
+              <button type="submitAlquilar" class="btn btn-primary btn-block" onClick={this.handleSubmitAlquilar.bind(this)}>Alquilar</button>
             </div>
             <div class="form-grup col-md-3 mt-2">
-              <button type="submitAgregarInquilino" class="btn btn-primary btn-block ">Agregar Inquilino</button>
+              <button type="submitAgregarInquilino" class="btn btn-primary btn-block " onClick={this.handleSubmitAddInquilino.bind(this)}>Agregar Inquilino</button>
             </div>
             <div class="form-grup col-md-3 mt-2">
-              <button type="submitLiberar" class="btn btn-primary btn-block ">Liberar</button>
+              <button type="submitLiberar" class="btn btn-primary btn-block" onClick={this.handleSubmitLiberar.bind(this)}>Liberar</button>
             </div>
             <div class="form-grup col-md-3 mt-2">
-              <button type="submitHabitar" class="btn btn-primary btn-block ">Habitar</button>
+              <button type="submitHabitar" class="btn btn-primary btn-block" onClick={this.handleSubmitHabitar.bind(this)}>Habitar</button>
             </div>
           </div>
         </div>

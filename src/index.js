@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '@trendmicro/react-modal/dist/react-modal.css';
+
 ReactDOM.render(  <App />,
   document.getElementById('root'));
 

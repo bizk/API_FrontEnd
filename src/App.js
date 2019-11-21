@@ -12,11 +12,9 @@ import AgregarReclamoModal from "./components/AgregarReclamoModal";
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
-import UsuarioList from "./components/UsuarioList";
-import UnidadList from "./components/UnidadList";
 import ReclamoList from "./components/ReclamoList";
-import UsuariosContainer from "./components/UsuariosContainer";
-
+import UsuariosContainer from "./components/Personas/UsuariosContainer";
+import UnidadesContainer from "./components/Unidades/UnidadesContainer";
 class App extends React.Component {
   constructor(props) {
     super(props);
@@ -33,12 +31,12 @@ class App extends React.Component {
 //  });
 //}
     this.state ={
-      tab: "personasTab",
+      tab: "unidadesTab",
       unidades: [],
       personas: [],
-      isUnidades: false,
+      isUnidades: true,
       isReclamos: false,
-      isPersonas: true,
+      isPersonas: false,
 
       isOpenAgregarReclamoModal: true
     };
@@ -47,32 +45,9 @@ class App extends React.Component {
 
   //Fetching data after loading the page
   componentDidMount() {
-    this.fetchUnidades();
     this.fetchPersonas();
   };
 
-
-  fetchUnidades(e){
-    axios.get("http://localhost:3001/unidades").then(response => {
-      //Array
-      const newUnidades = response.data.map(c => {
-        return {
-          identificador: c.identificador,
-          piso: c.piso,
-          numero: c.numero,
-          habitado: c.habitado,
-          codigoEdificio: c.codigoEdificio
-        };
-      });
-
-      //Create a new state object
-      let newState = Object.assign({}, this.state, {
-        unidades: newUnidades
-      });
-
-      this.setState(newState);
-    }).catch(error=> console.log(error));
-  }
 
   fetchPersonas(e) {
     axios.get("http://localhost:3001/personas").then(response => {
@@ -116,11 +91,11 @@ class App extends React.Component {
     let bodyContainer;
 
     //Dymamic generation of components inside the body container
-    if (tabPosition === "reclamosTab") {
-      bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
+    if (tabPosition === "unidadesTab") {
+      bodyContainer =  <UnidadesContainer/>;
     } else if (tabPosition === "personasTab") {
       bodyContainer = <UsuariosContainer/>;
-    } else {
+    } else if (tabPosition === "reclamosTab") {
       bodyContainer = <div>
         {this.state.isOpenAgregarReclamoModal ?
           <AgregarReclamoModal />

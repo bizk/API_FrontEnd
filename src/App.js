@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './components/App.css';
 import Header from './components/Header.js'
 import SideBar from './components/SideBar.js'
 
@@ -40,7 +40,7 @@ class App extends React.Component {
       isReclamos: false,
       isPersonas: true,
 
-      isOpenAgregarReclamoModal: true
+      isOpenAgregarReclamoModal: false
     };
     // this.handleClickReclamosTab = this.handleClickReclamosTab.bind(this);
   }
@@ -126,7 +126,7 @@ class App extends React.Component {
           <AgregarReclamoModal />
           : null
         }
-        <Button variant="info" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar +</Button>
+        <Button variant="info" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar un Reclamo</Button>
       </div>;
     };
 

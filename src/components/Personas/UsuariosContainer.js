@@ -116,7 +116,6 @@ export default class UsuariosContainer extends React.Component {
           <button type="button" class="btn btn-secondary" onClick={this.handleClickDueniosEdif.bind(this)}>Duenios</button>
           <button type="button" class="btn btn-secondary" onClick={this.handleClickHabitantesEdif.bind(this)}>Habitantes</button>
         </div>
-
         <UsuarioList personas={this.state.personas}/>
       </div>
     );

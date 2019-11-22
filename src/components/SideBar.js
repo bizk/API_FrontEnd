@@ -10,7 +10,7 @@ class SideBar extends React.Component {
            usuario : this.props.usr,
            edificiosUsuarioDuenio :  [],
            edificiosUsuarioInquilino : []
-       }
+       };
     }
 
     componentDidMount(){
@@ -27,28 +27,26 @@ class SideBar extends React.Component {
             nombre: c.nombre,
           };
         });
-  
+
         //Create a new state object
         let newState = Object.assign({}, this.state, {
           edificios: newEdificios,
         });
-  
+
         this.setState(newState);
       }).catch(error=> console.log(error));
     }
 
-    handleChildClick(event) {
-      this.setState({
-        edifId: this.props.edifId
-      })
-      alert(this.state.edifId)
+    handleChildClick(argmnt) {
+      var handleEdifSideBarChange = this.props.handleEdifSideBarChange;
+      handleEdifSideBarChange(argmnt)
     }
+
     render() {
       return (
         <div class="col-2 hidden-md-down bg-dark">
-          {this.state.edifId}
-          {this.state.edificios.map(c=><EdificioSideTab inputFct={this.handleChildClick.bind(this)} key={c.id} 
-                nombre={c.nombre} direccion={c.direccion}/>)}
+          {this.state.edificios.map(c=><EdificioSideTab handleChildClick={this.handleChildClick.bind(this)} key={c.id}
+                nombre={c.nombre} direccion={c.direccion} id={c.id}/>)}
         </div>
       );
     }

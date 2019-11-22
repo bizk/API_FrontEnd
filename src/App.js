@@ -18,36 +18,21 @@ import UnidadesContainer from "./components/Unidades/UnidadesContainer";
 class App extends React.Component {
   constructor(props) {
     super(props);
-
-// componentDidMount() {
-//  fetch('http://localhost:8080/apiRest/reclamosPorEdificio?codigo=1')
- // .then((res) => res.json()).then((json) => {
- //    this.setState({
- //    posts: json,
- //   });
-
- // }).catch((error) =>{
-   // alert("Error en API" + error);
-//  });
-//}
     this.state ={
       tab: "unidadesTab",
       unidades: [],
       personas: [],
+      edif: "1",
       isUnidades: true,
       isReclamos: false,
       isPersonas: false,
-
       isOpenAgregarReclamoModal: true
     };
-    // this.handleClickReclamosTab = this.handleClickReclamosTab.bind(this);
   }
 
-  //Fetching data after loading the page
   componentDidMount() {
     this.fetchPersonas();
   };
-
 
   fetchPersonas(e) {
     axios.get("http://localhost:3001/personas").then(response => {
@@ -86,15 +71,18 @@ class App extends React.Component {
     }));
   }
 
+  handleEdifSideBarChange(newEdif) {
+    this.setState({ edif: newEdif });
+  }
+
   render() {
     const tabPosition = this.state.tab;
     let bodyContainer;
-
     //Dymamic generation of components inside the body container
     if (tabPosition === "unidadesTab") {
-      bodyContainer =  <UnidadesContainer/>;
+      bodyContainer =  <UnidadesContainer edificio={this.state.edif}/>;
     } else if (tabPosition === "personasTab") {
-      bodyContainer = <UsuariosContainer/>;
+      bodyContainer = <UsuariosContainer edificio={this.state.edif}/>;
     } else if (tabPosition === "reclamosTab") {
       bodyContainer = <div>
         {this.state.isOpenAgregarReclamoModal ?
@@ -135,7 +123,7 @@ class App extends React.Component {
 
           <div class="container-fluid">
             <div class="row justify-content-center">
-              <SideBar />
+              <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} />
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

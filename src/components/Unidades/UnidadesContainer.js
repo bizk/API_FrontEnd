@@ -8,6 +8,7 @@ export default class UnidadesContainer extends React.Component {
     super(props);
     this.state={
       unidades: [],
+      edificio:"",
       piso:"",
       numero:"",
       dni:""
@@ -39,7 +40,7 @@ export default class UnidadesContainer extends React.Component {
       this.setState(newState);
     }).catch(error=> console.log(error));
   }
-  fetchUnidad(){
+  fetchUnidad(e){
     axios.get("http://localhost:3001/unidades").then(response => {
       //Array
       let newUnidades = response.data.map(c => {
@@ -73,6 +74,7 @@ export default class UnidadesContainer extends React.Component {
 
   genericPutFetch3Param(url){
     const params = {
+      edificio:this.state.edificio,
       piso: this.state.piso,
       numero: this.state.numero,
       dni: this.state.dni,
@@ -116,7 +118,7 @@ export default class UnidadesContainer extends React.Component {
 
   render() {
     return (
-      <div>
+      <div ref={this.edifRef}>
         <div clas="card">
           <div class="card-header mt-2">Herramientas</div>
           <div class="form-row card-body">

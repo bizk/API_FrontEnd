@@ -1,32 +1,32 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './components/App.css';
 import Header from './components/Header.js'
 import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
-import AgregarReclamoModal from "./components/AgregarReclamoModal";
+
 
 // import UnidadTab from './Components.js';
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
-import ReclamoList from "./components/ReclamoList";
+import ReclamoContainer from "./components/Reclamos/ReclamoContainer";
 import UsuariosContainer from "./components/Personas/UsuariosContainer";
 import UnidadesContainer from "./components/Unidades/UnidadesContainer";
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "unidadesTab",
+      tab: "reclamosTab",
       unidades: [],
       personas: [],
       edif: "1",
       isUnidades: true,
       isReclamos: false,
-      isPersonas: false,
-      isOpenAgregarReclamoModal: true
+      isPersonas: true,
+      role:"user"
     };
   }
 
@@ -35,7 +35,7 @@ class App extends React.Component {
   };
 
   fetchPersonas(e) {
-    axios.get("http://localhost:3001/personas").then(response => {
+    axios.get("http://localhost:8080/apiRest/getPersonas").then(response => {
       //Array
       const newPersonas = response.data.map(c => {
         return {
@@ -65,12 +65,6 @@ class App extends React.Component {
     this.setState(state => ({ tab: "personasTab", isUnidades: false, isReclamos: false, isPersonas: true}));
   }
 
-  toggleAgregarReclamoModal() {
-    this.setState(state => ({
-      isOpenAgregarReclamoModal: !this.state.isOpenAgregarReclamoModal
-    }));
-  }
-
   handleEdifSideBarChange(newEdif) {
     this.setState({ edif: newEdif });
   }
@@ -84,13 +78,7 @@ class App extends React.Component {
     } else if (tabPosition === "personasTab") {
       bodyContainer = <UsuariosContainer edificio={this.state.edif}/>;
     } else if (tabPosition === "reclamosTab") {
-      bodyContainer = <div>
-        {this.state.isOpenAgregarReclamoModal ?
-          <AgregarReclamoModal />
-          : null
-        }
-        <Button variant="info" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar +</Button>
-      </div>;
+      bodyContainer = <ReclamoContainer edificio={this.state.edif}></ReclamoContainer>
     };
 
     return (
@@ -104,14 +92,14 @@ class App extends React.Component {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
-                    <li class= "nav-item">
+                    {this.state.role === "admin" ? (<li class= "nav-item">
                       <button type="button" class={"btn " + (this.state.isUnidades ? "btn-secondary" : "btn-dark")}
                               onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
-                    </li>
-                    <li class={"nav-item "}>
+                    </li>) : <div/>}
+                    {this.state.role === "admin" ? (<li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isPersonas ? "btn-secondary" : "btn-dark")}
                               onClick={this.handleClickPersonasTab.bind(this)}>Personas</button>
-                    </li>
+                    </li>) : <div/>}
                     <li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}
                               onClick={this.handleClickReclamosTab.bind(this)}>Reclamos</button>
@@ -123,7 +111,11 @@ class App extends React.Component {
 
           <div class="container-fluid">
             <div class="row justify-content-center">
+<<<<<<< HEAD
               <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} edificio={this.state.edif}/>
+=======
+              { this.state.role==="admin" ? <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> : <div/>}
+>>>>>>> 042fbf7c46fe535ee53d481fed43677519b0b74e
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

@@ -8,7 +8,7 @@ export default class UnidadesContainer extends React.Component {
     super(props);
     this.state={
       unidades: [],
-      edificio:"",
+      edificio:props.edificio,
       piso:"",
       numero:"",
       dni:""
@@ -74,7 +74,7 @@ export default class UnidadesContainer extends React.Component {
 
   genericPutFetch3Param(url){
     const params = {
-      edificio:this.state.edificio,
+      edificio: this.props.edificio,
       piso: this.state.piso,
       numero: this.state.numero,
       dni: this.state.dni,

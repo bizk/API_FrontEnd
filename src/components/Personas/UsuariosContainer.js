@@ -10,6 +10,7 @@ export default class UsuariosContainer extends React.Component {
 
     this.state = {
       personas: [],
+      edificio: props.edificio,
     }
   }
 
@@ -18,7 +19,10 @@ export default class UsuariosContainer extends React.Component {
   }
 
   fetchAllPersonas(e) {
-    axios.get("http://localhost:3001/personas").then(response => {
+    const param = {
+      edificio: this.props.edificio,
+    };
+    axios.get("http://localhost:3001/personas",{param}).then(response => {
       //Array
       let newPersonas = response.data.map(c => {
         return {
@@ -37,7 +41,10 @@ export default class UsuariosContainer extends React.Component {
     }).catch(error=> console.log(error));
   }
   fetchHabilitados(e) {
-    axios.get("http://localhost:3001/habilitados").then(response => {
+    const param = {
+      edificio: this.props.edificio,
+    };
+    axios.get("http://localhost:3001/habilitados",{param}).then(response => {
       //Array
       let newPersonas = response.data.map(c => {
         return {
@@ -56,7 +63,10 @@ export default class UsuariosContainer extends React.Component {
     }).catch(error=> console.log(error));
   }
   fetchDuenios(e) {
-    axios.get("http://localhost:3001/duenios").then(response => {
+    const param = {
+      edificio: this.props.edificio,
+    };
+    axios.get("http://localhost:3001/duenios",{param}).then(response => {
       //Array
       let newPersonas = response.data.map(c => {
         return {
@@ -75,7 +85,10 @@ export default class UsuariosContainer extends React.Component {
     }).catch(error=> console.log(error));
   }
   fetchHabitantes(e) {
-    axios.get("http://localhost:3001/habitantes").then(response => {
+    const param = {
+      edificio: this.props.edificio,
+    };
+    axios.get("http://localhost:3001/habitantes",{param}).then(response => {
       //Array
       let newPersonas = response.data.map(c => {
         return {

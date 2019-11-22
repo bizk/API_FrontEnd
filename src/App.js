@@ -19,13 +19,14 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "unidadesTab",
+      tab: "reclamosTab",
       unidades: [],
       personas: [],
       edif: "1",
       isUnidades: true,
       isReclamos: false,
       isPersonas: true,
+      role:"user"
     };
   }
 
@@ -77,7 +78,7 @@ class App extends React.Component {
     } else if (tabPosition === "personasTab") {
       bodyContainer = <UsuariosContainer edificio={this.state.edif}/>;
     } else if (tabPosition === "reclamosTab") {
-      bodyContainer = <ReclamoContainer edificicio={this.state.edif}></ReclamoContainer>
+      bodyContainer = <ReclamoContainer edificio={this.state.edif}></ReclamoContainer>
     };
 
     return (
@@ -91,14 +92,14 @@ class App extends React.Component {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul class="navbar-nav mr-auto">
-                    <li class= "nav-item">
+                    {this.state.role === "admin" ? (<li class= "nav-item">
                       <button type="button" class={"btn " + (this.state.isUnidades ? "btn-secondary" : "btn-dark")}
                               onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
-                    </li>
-                    <li class={"nav-item "}>
+                    </li>) : <div/>}
+                    {this.state.role === "admin" ? (<li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isPersonas ? "btn-secondary" : "btn-dark")}
                               onClick={this.handleClickPersonasTab.bind(this)}>Personas</button>
-                    </li>
+                    </li>) : <div/>}
                     <li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}
                               onClick={this.handleClickReclamosTab.bind(this)}>Reclamos</button>
@@ -110,7 +111,7 @@ class App extends React.Component {
 
           <div class="container-fluid">
             <div class="row justify-content-center">
-              <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} />
+              { this.state.role==="admin" ? <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> : <div/>}
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

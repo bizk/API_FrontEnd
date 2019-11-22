@@ -12,7 +12,7 @@ class AgregarReclamoModal extends React.Component {
             documento: '',
             codigo: '',
             piso: '',
-            numero: '',
+            numeroUnidad: '',
 
 
         }
@@ -35,6 +35,10 @@ class AgregarReclamoModal extends React.Component {
         });
     }
 
+    opcionesEdificio(){
+        
+    }
+
     render() {
         return (
             <div class="container-fluid m-1 bg-info rounded">
@@ -54,7 +58,7 @@ class AgregarReclamoModal extends React.Component {
                                 <select class="form-control" name="piso"> </select>
                             </div>
                             <div class="column col-3">
-                                <label for="numero"> Numero:</label>
+                                <label for="numeroUnidad"> Numero:</label>
                                 <select class="form-control" name="numero"> </select>
                             </div>
                             <div class="column col-1" />

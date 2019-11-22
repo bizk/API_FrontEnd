@@ -6,7 +6,6 @@ class SideBar extends React.Component {
        super(props);
        this.state = {
           edificios: [],
-          edifId:1,
            usuario : this.props.usr,
            edificiosUsuarioDuenio :  [],
            edificiosUsuarioInquilino : []
@@ -46,7 +45,7 @@ class SideBar extends React.Component {
       return (
         <div class="col-2 hidden-md-down bg-dark">
           {this.state.edificios.map(c=><EdificioSideTab handleChildClick={this.handleChildClick.bind(this)} key={c.id}
-                nombre={c.nombre} direccion={c.direccion} id={c.id}/>)}
+                nombre={c.nombre} direccion={c.direccion} id={c.id} edificio={this.props.edificio}/>)}
         </div>
       );
     }

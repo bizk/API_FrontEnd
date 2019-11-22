@@ -123,7 +123,7 @@ class App extends React.Component {
 
           <div class="container-fluid">
             <div class="row justify-content-center">
-              <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} />
+              <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} edificio={this.state.edif}/>
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

@@ -18,7 +18,7 @@ export default class UsuariosContainer extends React.Component {
   }
 
   fetchAllPersonas(e) {
-    axios.get("http://localhost:3001/personas").then(response => {
+    axios.get(" http://localhost:3001/personas").then(response => {
       //Array
       let newPersonas = response.data.map(c => {
         return {

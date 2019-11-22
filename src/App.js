@@ -12,67 +12,27 @@ import AgregarReclamoModal from "./components/AgregarReclamoModal";
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
-import UsuarioList from "./components/UsuarioList";
-import UnidadList from "./components/UnidadList";
 import ReclamoList from "./components/ReclamoList";
-import UsuariosContainer from "./components/UsuariosContainer";
-
+import UsuariosContainer from "./components/Personas/UsuariosContainer";
+import UnidadesContainer from "./components/Unidades/UnidadesContainer";
 class App extends React.Component {
   constructor(props) {
     super(props);
-
-// componentDidMount() {
-//  fetch('http://localhost:8080/apiRest/reclamosPorEdificio?codigo=1')
- // .then((res) => res.json()).then((json) => {
- //    this.setState({
- //    posts: json,
- //   });
-
- // }).catch((error) =>{
-   // alert("Error en API" + error);
-//  });
-//}
     this.state ={
-      tab: "personasTab",
+      tab: "unidadesTab",
       unidades: [],
       personas: [],
-      isUnidades: false,
+      edif: "1",
+      isUnidades: true,
       isReclamos: false,
-      isPersonas: true,
-
+      isPersonas: false,
       isOpenAgregarReclamoModal: true
     };
-    // this.handleClickReclamosTab = this.handleClickReclamosTab.bind(this);
   }
 
-  //Fetching data after loading the page
   componentDidMount() {
-    this.fetchUnidades();
     this.fetchPersonas();
   };
-
-
-  fetchUnidades(e){
-    axios.get("http://localhost:3001/unidades").then(response => {
-      //Array
-      const newUnidades = response.data.map(c => {
-        return {
-          identificador: c.identificador,
-          piso: c.piso,
-          numero: c.numero,
-          habitado: c.habitado,
-          codigoEdificio: c.codigoEdificio
-        };
-      });
-
-      //Create a new state object
-      let newState = Object.assign({}, this.state, {
-        unidades: newUnidades
-      });
-
-      this.setState(newState);
-    }).catch(error=> console.log(error));
-  }
 
   fetchPersonas(e) {
     axios.get("http://localhost:3001/personas").then(response => {
@@ -111,16 +71,19 @@ class App extends React.Component {
     }));
   }
 
+  handleEdifSideBarChange(newEdif) {
+    this.setState({ edif: newEdif });
+  }
+
   render() {
     const tabPosition = this.state.tab;
     let bodyContainer;
-
     //Dymamic generation of components inside the body container
-    if (tabPosition === "reclamosTab") {
-      bodyContainer =  <UnidadList unidades={this.state.unidades}/>;
+    if (tabPosition === "unidadesTab") {
+      bodyContainer =  <UnidadesContainer edificio={this.state.edif}/>;
     } else if (tabPosition === "personasTab") {
-      bodyContainer = <UsuariosContainer/>;
-    } else {
+      bodyContainer = <UsuariosContainer edificio={this.state.edif}/>;
+    } else if (tabPosition === "reclamosTab") {
       bodyContainer = <div>
         {this.state.isOpenAgregarReclamoModal ?
           <AgregarReclamoModal />
@@ -158,11 +121,9 @@ class App extends React.Component {
             </Nav>
           </header>
 
-          <div class="container-fluid fill">
-            <div class="row justify-content-center h-100">
-              <div class="col-2 hidden-md-down bg-dark">
-                <SideBar />
-              </div>
+          <div class="container-fluid">
+            <div class="row justify-content-center">
+              <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} />
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

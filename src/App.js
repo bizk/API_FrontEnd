@@ -133,11 +133,9 @@ class App extends React.Component {
             </Nav>
           </header>
 
-          <div class="container-fluid fill">
-            <div class="row justify-content-center h-100">
-              <div class="col-2 hidden-md-down bg-dark">
-                <SideBar />
-              </div>
+          <div class="container-fluid">
+            <div class="row justify-content-center">
+              <SideBar />
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

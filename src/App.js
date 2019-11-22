@@ -6,13 +6,13 @@ import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
-import AgregarReclamoModal from "./components/AgregarReclamoModal";
+
 
 // import UnidadTab from './Components.js';
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
 
-import ReclamoList from "./components/ReclamoList";
+import ReclamoContainer from "./components/Reclamos/ReclamoContainer";
 import UsuariosContainer from "./components/Personas/UsuariosContainer";
 import UnidadesContainer from "./components/Unidades/UnidadesContainer";
 class App extends React.Component {
@@ -26,7 +26,6 @@ class App extends React.Component {
       isUnidades: true,
       isReclamos: false,
       isPersonas: true,
-      isOpenAgregarReclamoModal: true
     };
   }
 
@@ -35,7 +34,7 @@ class App extends React.Component {
   };
 
   fetchPersonas(e) {
-    axios.get("http://localhost:3001/personas").then(response => {
+    axios.get("http://localhost:8080/apiRest/getPersonas").then(response => {
       //Array
       const newPersonas = response.data.map(c => {
         return {
@@ -65,12 +64,6 @@ class App extends React.Component {
     this.setState(state => ({ tab: "personasTab", isUnidades: false, isReclamos: false, isPersonas: true}));
   }
 
-  toggleAgregarReclamoModal() {
-    this.setState(state => ({
-      isOpenAgregarReclamoModal: !this.state.isOpenAgregarReclamoModal
-    }));
-  }
-
   handleEdifSideBarChange(newEdif) {
     this.setState({ edif: newEdif });
   }
@@ -84,13 +77,7 @@ class App extends React.Component {
     } else if (tabPosition === "personasTab") {
       bodyContainer = <UsuariosContainer edificio={this.state.edif}/>;
     } else if (tabPosition === "reclamosTab") {
-      bodyContainer = <div>
-        {this.state.isOpenAgregarReclamoModal ?
-          <AgregarReclamoModal />
-          : null
-        }
-        <Button variant="info" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar un Reclamo</Button>
-      </div>;
+      bodyContainer = <ReclamoContainer edificicio={this.state.edif}></ReclamoContainer>
     };
 
     return (

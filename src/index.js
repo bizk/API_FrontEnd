@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
+import Login from "./components/Login";
 import App from './App';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '@trendmicro/react-modal/dist/react-modal.css';

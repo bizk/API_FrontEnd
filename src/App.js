@@ -26,7 +26,7 @@ class App extends React.Component {
       isUnidades: true,
       isReclamos: false,
       isPersonas: true,
-      role:"user"
+      role:"usr"
     };
   }
 
@@ -111,11 +111,7 @@ class App extends React.Component {
 
           <div class="container-fluid">
             <div class="row justify-content-center">
-<<<<<<< HEAD
-              <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} edificio={this.state.edif}/>
-=======
               { this.state.role==="admin" ? <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> : <div/>}
->>>>>>> 042fbf7c46fe535ee53d481fed43677519b0b74e
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

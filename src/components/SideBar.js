@@ -12,7 +12,7 @@ class SideBar extends React.Component {
        };
     }
 
-    componentDidMount(){
+    async componentDidMount(){
       this.fetchEdificios();
     }
 

@@ -6,8 +6,6 @@ import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
-
-
 // import UnidadTab from './Components.js';
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
@@ -26,11 +24,12 @@ class App extends React.Component {
       isUnidades: true,
       isReclamos: false,
       isPersonas: true,
-      role:"usr"
+      userName : props.userName,
+      role: props.role
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.fetchPersonas();
   };
 
@@ -66,6 +65,7 @@ class App extends React.Component {
   }
 
   handleEdifSideBarChange(newEdif) {
+    console.log(newEdif);
     this.setState({ edif: newEdif });
   }
 

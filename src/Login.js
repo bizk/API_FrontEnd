@@ -5,9 +5,9 @@ class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      usuario:"",
+      usuario: "",
       pwd:"",
-      hola:"",
+      role:"",
     }
  }
 
@@ -23,7 +23,16 @@ class Login extends React.Component {
  }
 
  handleClickLogin(){
-   alert(this.state.usuario);
+   if (this.state.usuario === "admin" && this.state.pwd === "admin") {
+     this.setState({role: "admin"});
+   } else {
+     this.setState({role: "usr"});
+   }
+   //We should fetch with the login uril here
+   //
+   //LOGIN URIL SHOULD BE UP HERE AND DO STH}
+   var handleUsrChange = this.props.handleUsrChange;
+   handleUsrChange(this.state.userName, this.state.role);
  }
 
   render() {
@@ -54,7 +63,7 @@ class Login extends React.Component {
                 </div>
                 <div class="form-group col-md-12">
                   <label for="inputPwd">Contraseña</label>
-                  <input type="text" class="form-control" onChange={this.handlePwdChange.bind(this)}
+                  <input type="password" class="form-control" onChange={this.handlePwdChange.bind(this)}
                     value={this.state.value} placeHolder="Contraseña" />
                 </div>
               </div>

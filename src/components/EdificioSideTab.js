@@ -5,7 +5,6 @@ export default class EdificioSideTab extends React.Component {
         super();
      }
 
-
     render() {
         var handleChildClick = this.props.handleChildClick;
         return(

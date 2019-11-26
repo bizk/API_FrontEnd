@@ -22,7 +22,7 @@ class App extends React.Component {
       tab: "reclamosTab",
       unidades: [],
       personas: [],
-      edif: "1",
+      edif: {},
       isUnidades: true,
       isReclamos: false,
       isPersonas: true,
@@ -66,7 +66,7 @@ class App extends React.Component {
   }
 
   handleEdifSideBarChange(newEdif) {
-    this.setState({ edif: newEdif });
+    this.setState({ edif: {codigo: newEdif.id, nombre: newEdif.nombre, direccion: newEdif.direccion } });
   }
 
   render() {
@@ -111,7 +111,7 @@ class App extends React.Component {
 
           <div class="container-fluid">
             <div class="row justify-content-center">
-              { this.state.role==="admin" ? <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> : <div/>}
+              <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> 
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

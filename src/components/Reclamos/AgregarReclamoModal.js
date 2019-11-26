@@ -35,7 +35,9 @@ class AgregarReclamoModal extends React.Component {
             [name]: value
         });
     }
-
+    componentDidMount(){
+        
+    }
      opcionesEdificio(){
         /*TO DO: validar que solo muestre edificios que el user esté habilitado
             Opciones: Cambiar el endpoint o agregarlos al estado del componente*/
@@ -66,7 +68,7 @@ class AgregarReclamoModal extends React.Component {
                             <div class="column col-1" />
                             <div class="column col-4">
                                 <label> Edificio: </label>
-                                <SelectDinamico name="codigo"> </SelectDinamico>
+                               {/* <SelectDinamico name="codigo"> </SelectDinamico> */}
                                 <select class="form-control" name="codigo">
                                 {edificios}
                                 </select>

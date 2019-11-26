@@ -2,16 +2,16 @@ import React from 'react';
 import AgregarReclamoModal from "./AgregarReclamoModal";
 import ReclamoList from "./ReclamoList"
 import axios from "axios";
+import { isNullOrUndefined } from 'util';
 
 export default class ReclamoContainer extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             reclamos: [],
-            //Datos heredados
+            //Datos heredados -- A leer directamente del props.
             usuarioActivo: "CI 13230978",
-            edificioActivo: props.edificio,
-            unidadesDisponibles: [],
+            //Estados
             isOpenAgregarReclamoModal: false
         }
 
@@ -19,6 +19,7 @@ export default class ReclamoContainer extends React.Component {
     }
     componentWillMount() {
         this.fetchReclamos();
+
     }
 
     fetchReclamos(url) {
@@ -67,8 +68,12 @@ export default class ReclamoContainer extends React.Component {
         this.fetchReclamos(url)
     }
     handleReclamosMisEdificios(){
-        let url = "http://localhost:8080/apiRest/reclamosPorEdificio?codigo=" + this.state.edificioActivo
+        if (this.props.edificio.codigo== null){
+            alert("No ha seleccionado ningún edificio!")
+        } else{
+        let url = "http://localhost:8080/apiRest/reclamosPorEdificio?codigo=" + this.props.edificio.codigo
         this.fetchReclamos(url)
+        }
     }
     handleReclamoPorNumero(){
         let nroreclamo = prompt("Ingrese numero de reclamo", "1002")
@@ -86,7 +91,7 @@ export default class ReclamoContainer extends React.Component {
         let form;
         if (this.state.isOpenAgregarReclamoModal) {
             form = (<div>
-                <AgregarReclamoModal />
+                <AgregarReclamoModal edificio={this.props.edificio} usuario ={this.state.usuarioActivo /*TODO cambiar cuando se termine login*/}/> 
                 <button type="button" class="btn btn-warning" onClick={this.toggleAgregarReclamoModal.bind(this)}>Cancelar</button>
             </div>)
         
@@ -96,9 +101,9 @@ export default class ReclamoContainer extends React.Component {
             <div class="mt-2">
                 <div class="btn-group btn-group-toggle col-12">
                     <button type="button" class="btn btn-secondary" onClick={this.handleMisReclamos.bind(this)}>Mis reclamos</button>
-                    <button type="button" class="btn btn-secondary" onClick={this.handleReclamosMisEdificios.bind(this)}>Reclamos en mis edificios</button>
-                    <button type="button" class="btn btn-secondary" onClick={this.handleReclamoPorNumero.bind(this)}>Buscar Reclamo por numero</button>
-                    <button type="button" class="btn btn-primary" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar reclamo</button>
+                    <button type="button" class="btn btn-secondary" onClick={this.handleReclamosMisEdificios.bind(this)}>Reclamos en este edificio</button>
+                    <button type="button" class="btn btn-secondary" onClick={this.handleReclamoPorNumero.bind(this)}>Buscar reclamo por numero</button>
+                    <button type="button" class="btn btn-primary" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar reclamo en éste edificio</button>
                 </div>
                 {form}
                 <ReclamoList reclamos={this.state.reclamos}></ReclamoList>

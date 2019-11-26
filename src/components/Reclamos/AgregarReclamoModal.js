@@ -10,80 +10,75 @@ class AgregarReclamoModal extends React.Component {
             numeroReclamo: '',
             descripcion: '',
             ubicacion: '',
-            documento: '',
-            codigo: '',
             piso: '',
             numeroUnidad: '',
+            radioopt: '',
+            imagenes:[],
+            archivos:{}
 
 
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.opcionesEdificio = this.opcionesEdificio.bind(this);
+        this.agregarReclamo = this.agregarReclamo.bind(this);
     }
 
     handleSubmit(event) {
-        alert('Un reclamo fue enviado: ' + this.state.descripcion + this.state.ubicacion);
+        this.agregarReclamo();
+        
         event.preventDefault();
     }
+    agregarReclamo() {
+        let url= 'http://localhost:8080/apiRest/agregarReclamo?codigo='+this.props.edificio.codigo+'&piso='+this.state.piso+'&numero='+this.state.numeroUnidad+'&ubicacion='+this.state.ubicacion+'&documento='+encodeURIComponent(this.props.usuario)+'&descripcion='+encodeURIComponent(this.state.descripcion)
+        console.log(url)
+         axios.post(url).then(response =>{
+            this.setState({
+                numeroReclamo:response.data.nroreclamo
+            })
+         })
+        
+    }
+
     handleInputChange(event) {
         const target = event.target;
-        const value = target.type === 'checkbox' ? target.checked : target.value;
+        const value = target.type === 'checkbox' ? target.checked : target.type === 'file' ? target.files : target.value;
         const name = target.name;
 
         this.setState({
             [name]: value
         });
     }
-    componentDidMount(){
-        
-    }
-     opcionesEdificio(){
-        /*TO DO: validar que solo muestre edificios que el user esté habilitado
-            Opciones: Cambiar el endpoint o agregarlos al estado del componente*/
-        let edificios = axios.get("http://localhost:8080/apiRest/getEdificios").then(response => 
-        response.data.map(item => {
-           return <option value={item.codigo}>{item.nombre}</option>
-        }));
-        console.log(edificios);
-       
-
-    } 
 
     render() {
-      /*  let edificios = axios.get("http://localhost:8080/apiRest/getEdificios").then(response => 
-        response.data.map(item => {
-            return (
-              <option value={item.codigo}>{item.nombre}</option>
-            )}));
-        console.log(edificios)*/
-            let edificios = this.opcionesEdificio;
-        
+
+
         return (
-            <div class="container-fluid m-1 bg-info rounded">
+            <div class="container-fluid m-1 bg-info rounded pt-2 pb-3">
                 <h3>Agrega un nuevo reclamo</h3>
                 <div class="form-group">
                     <form onSubmit={this.handleSubmit}>
-                        <div class="row">
+                        <div class="row align-items-center my-1">
                             <div class="column col-1" />
                             <div class="column col-4">
                                 <label> Edificio: </label>
-                               {/* <SelectDinamico name="codigo"> </SelectDinamico> */}
-                                <select class="form-control" name="codigo">
-                                {edificios}
-                                </select>
+                                <input readOnly class="form-control-plaintext" name="edificio" value={this.props.edificio.nombre}>
+                                </input>
                             </div>
-                            <div class="column col-3">
-                                <label> Piso:</label>
-                                <select class="form-control" name="piso"> </select>
-                            </div>
-                            <div class="column col-3">
-                                <label> Numero:</label>
-                                <select class="form-control" name="numero"> </select>
+                            <div class="column col-1" />
+                            <div class="column col-4">
+                                <label> Ubicación </label>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="inlineRadio1" name="radioopt" value="miunidad" onChange={this.handleInputChange} />
+                                    <label class="form-check-label" htmlFor="inlineRadio1">Mi unidad</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" id="inlineRadio2" name="radioopt" value="comun" onChange={this.handleInputChange} />
+                                    <label class="form-check-label" htmlFor="inlineRadio2">Espacio Común</label>
+                                </div>
                             </div>
                             <div class="column col-1" />
                         </div>
-                        <div class="row" >
+                        <div class="row align-items-center my-1" >
                             <div class="column col-1" />
                             <div class="column col-10">
                                 <label> Descripción:  </label>
@@ -91,25 +86,63 @@ class AgregarReclamoModal extends React.Component {
                             </div>
                             <div class="column col-1"></div>
                         </div>
-                        <div class="row" >
+                        <div class="row align-items-center my-1">
                             <div class="column col-1"></div>
-                            <div class="column col-3">
-                                <label>  Ubicacion: </label>
-                                <select class="form-control" name="ubicacion" onChange={this.handleInputChange}>
-                                    <option value="SUM">SUM</option>
-                                    <option value="Lobby">Lobby</option>
-                                    <option value="Ascensor">Ascensor</option>
-                                    <option value="Pallier">Pallier</option>
-                                    <option value="Cocina">Cocina</option>
-                                    <option value="Banio">Baño</option>
-                                    <option value="Habitacion">Habitacion</option>
-                                </select>
+                            <div className="column col-10">
+                                <label htmlFor="inputGroupFile01">Añadir imágenes (opcional)</label>
+                                <div className="custom-file">
+                                    <input
+                                        type="file"
+                                        className="custom-file-input"
+                                        id="inputGroupFile01"
+                                        name="archivos"
+                                        multiple
+                                        onChange={this.handleInputChange}
+                                    />
+                                    <label className="custom-file-label" htmlFor="inputGroupFile01">
+                                        Seleccione un archivo
+                                    </label>
+
+                                </div>
+                            </div>
+                            <div class="column col-1"></div>
+                        </div>
+                        <div class="row align-items-end my-1 " >
+                            <div class="column col-1"></div>
+                            {this.state.radioopt === "comun" ?
+                                (<div class="column col-3">
+                                    <label>  Lugar: </label>
+                                    <select class="form-control" name="ubicacion" onChange={this.handleInputChange}>
+                                        <option value="SUM">SUM</option>
+                                        <option value="Lobby">Lobby</option>
+                                        <option value="Ascensor">Ascensor</option>
+                                        <option value="Pallier">Pallier</option>
+                                        <option value="Lavanderia">Lavandería</option>
+                                        <option value="Piscina">Piscina</option>
+                                        <option value="Cocheras">Cocheras</option>
+                                    </select>
+                                </div>) : this.state.radioopt === "miunidad" ? (<div class="column col-3">
+                                    <label>  Unidad: </label>
+                                    <select class="form-control" name="unidad" onChange={this.handleInputChange}>
+
+                                    </select>
+                                </div>) : (<div class="column col-3">
+                                    <label>Selecciona una ubicación primero</label>
+                                    <select class="form-control" disabled></select>
+                                </div>)}
+                        </div>
+                        <div class="row my-1">
+                            <div class="col-3 offset-9">
+                                <button class="btn btn-primary" type="submit">Enviar reclamo</button>
                             </div>
                         </div>
+                        {this.state.numeroReclamo===""? <div></div> : (<div class="row my-1 justify-content-center">
+                                                                <h3>Reclamo agregado con el numero #{this.state.numeroReclamo}</h3>
+                                                            </div>)}
 
 
 
-                        <button type="submit">Enviar reclamo</button>
+
 
                     </form>
                 </div>

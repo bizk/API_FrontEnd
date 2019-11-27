@@ -27,16 +27,16 @@ class Login extends React.Component {
    this.setState({pwd: event.target.value})
  }
 
- handleClickLogin(){
+ handleClickLogin(e){
+   this.fetchLogin(e);
+
    if (this.state.usuario === "admin" && this.state.pwd === "admin") {
      this.setState({role: "admin"});
    } else {
      this.setState({role: "usr"});
    }
 
-   //We should fetch with the login uril here
-   //
-   //LOGIN URIL SHOULD BE UP HERE AND DO STH}
+
    var handleUsrChange = this.props.handleUsrChange;
    handleUsrChange(this.state.userName, this.state.role);
  }
@@ -46,10 +46,11 @@ class Login extends React.Component {
      usr:this.state.usuario,
      pwd: this.state.pwd
    }
-   axios.post("http://localhost:8080/apiRest/login", {params}).catch(error=> console.log(error));
-
-   axios.get("http://localhost:8080/apiRest/loggedSucces").then(response => {
+   console.log(params);
+   axios.post("http://localhost:8080/API_ApiRest/login", {params}).catch(error=> console.log(error));
+   axios.get("http://localhost:8080/API_ApiRest/loggedSucces").then(response => {
      this.setState({loginStatus: response.data.message});
+     console.log(response.data);
    }).catch(error=> console.log(error));
  }
 

@@ -3,6 +3,8 @@ import {render} from 'react-dom';
 
 import {User} from "react-feather";
 
+import axios from "axios";
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -47,7 +49,7 @@ class Login extends React.Component {
    axios.post("http://localhost:8080/apiRest/login", {params}).catch(error=> console.log(error));
 
    axios.get("http://localhost:8080/apiRest/loggedSucces").then(response => {
-     this.setState(loginStatus: response.data.message);
+     this.setState({loginStatus: response.data.message});
    }).catch(error=> console.log(error));
  }
 

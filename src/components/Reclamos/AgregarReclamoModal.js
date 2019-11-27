@@ -14,18 +14,19 @@ class AgregarReclamoModal extends React.Component {
             numeroUnidad: '',
             radioopt: '',
             imagenes:[],
-            archivos:{}
-
-
+            archivos:{},
+            authImgur: {'Authorization' : 'Client-ID b01d63b19d0a499'},
+            urlimagenprueba:''
         }
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.agregarReclamo = this.agregarReclamo.bind(this);
+        this.agregarImagenes =this.agregarImagenes.bind(this);
     }
 
     handleSubmit(event) {
         this.agregarReclamo();
-        
+        this.agregarImagenes();
         event.preventDefault();
     }
     agregarReclamo() {
@@ -37,6 +38,14 @@ class AgregarReclamoModal extends React.Component {
             })
          })
         
+    }
+    agregarImagenes(){
+        
+    }
+    componentDidMount(){
+        {console.log(axios.get('https://api.imgur.com/3/image/unLTBct', {headers : {Authorization: 'Client-ID b01d63b19d0a499' } }).then(response =>{
+                    return response.data.data.link
+                }))}
     }
 
     handleInputChange(event) {

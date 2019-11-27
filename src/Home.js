@@ -8,8 +8,8 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state  = {
-      userName : "",
-      role: ""
+      userName : "admin",
+      role: "admin"
     }
  }
 

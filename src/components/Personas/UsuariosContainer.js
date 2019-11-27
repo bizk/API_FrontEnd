@@ -22,7 +22,7 @@ export default class UsuariosContainer extends React.Component {
     const param = {
       edificio: this.props.edificio,
     };
-    axios.get("http://localhost:3001/personas",{param}).then(response => {
+    axios.post("http://localhost:8080/API_ApiRest/habilitadosPorEdificio",{param}).then(response => {
       //Array
       let newPersonas = response.data.map(c => {
         return {
@@ -42,9 +42,9 @@ export default class UsuariosContainer extends React.Component {
   }
   fetchHabilitados(e) {
     const param = {
-      edificio: this.props.edificio,
+      edificio: 1,
     };
-    axios.get("http://localhost:3001/habilitados",{param}).then(response => {
+    axios.post("http://localhost:8080/API_ApiRest/habilitadosPorEdificio",{param}).then(response => {
       //Array
       let newPersonas = response.data.map(c => {
         return {

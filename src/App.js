@@ -19,7 +19,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "reclamosTab",
+      tab: "personasTab",
       unidades: [],
       personas: [],
       edif: "1",
@@ -36,7 +36,8 @@ class App extends React.Component {
   };
 
   fetchPersonas(e) {
-    axios.get("http://localhost:8080/apiRest/getPersonas").then(response => {
+    const params = {codigo: 1};
+    axios.post("http://localhost:8080/API_ApiRest/habilitadosPorEdificio", {params}).then(response => {
       //Array
       const newPersonas = response.data.map(c => {
         return {

@@ -20,9 +20,11 @@ export default class UnidadesContainer extends React.Component {
   }
 
   fetchUnidades(e){
-    axios.get("http://localhost:3001/unidades").then(response => {
+    const param = {codigo: this.state.edificio}
+    axios.post("http://localhost:8080/API_ApiRest/getUnidadesPorEdificio", {param}).then(response => {
       //Array
       const newUnidades = response.data.map(c => {
+        console.log(c);
         return {
           identificador: c.identificador,
           piso: c.piso,
@@ -92,7 +94,7 @@ export default class UnidadesContainer extends React.Component {
     event.preventDefault();
   }
   handleSubmitTransUnidad(event) {
-    this.genericPutFetch3Param("http://localhost:3001/transferirUnidad")
+    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/transferirUnidad")
     event.preventDefault();
   }
   handleSubmitAddDuenio(event) {

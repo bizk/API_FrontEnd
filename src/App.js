@@ -6,6 +6,8 @@ import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
+import { Home, Users, MessageSquare } from "react-feather";
+
 // import UnidadTab from './Components.js';
 
 import {Navbar, Nav, NavItem, Button, Glyphicon} from 'react-bootstrap';
@@ -65,7 +67,6 @@ class App extends React.Component {
   }
 
   handleEdifSideBarChange(newEdif) {
-    console.log(newEdif);
     this.setState({ edif: newEdif });
   }
 
@@ -94,15 +95,16 @@ class App extends React.Component {
                   <ul class="navbar-nav mr-auto">
                     {this.state.role === "admin" ? (<li class= "nav-item">
                       <button type="button" class={"btn " + (this.state.isUnidades ? "btn-secondary" : "btn-dark")}
-                              onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
+                              onClick={this.handleClickUnidadesTab.bind(this)}><Home color="#FFFFFF" size="18" /> Unidades</button>
                     </li>) : <div/>}
                     {this.state.role === "admin" ? (<li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isPersonas ? "btn-secondary" : "btn-dark")}
-                              onClick={this.handleClickPersonasTab.bind(this)}>Personas</button>
+                              onClick={this.handleClickPersonasTab.bind(this)}><Users color="#FFFFFF" size="18"/> Personas</button>
                     </li>) : <div/>}
                     <li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}
-                              onClick={this.handleClickReclamosTab.bind(this)}>Reclamos</button>
+                              onClick={this.handleClickReclamosTab.bind(this)}>
+                              <MessageSquare color="#FFFFFF" size="18"/> Reclamos</button>
                     </li>
                   </ul>
                  </div>

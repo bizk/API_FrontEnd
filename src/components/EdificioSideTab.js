@@ -1,4 +1,5 @@
 import React from "react";
+import { Tablet } from "react-feather";
 
 export default class EdificioSideTab extends React.Component {
     constructor(props){
@@ -10,7 +11,7 @@ export default class EdificioSideTab extends React.Component {
         return(
             <button type="button" onClick={()=>handleChildClick(this.props.id)}
             class={"btn btn-block mt-2 " + ((this.props.edificio === this.props.id) ? "btn-secondary" : "btn-dark")}>
-                <p class="font-weight-bold">{this.props.nombre}</p>
+                <p class="font-weight-bold"><Tablet class="float"color="#ffffff" size="18"/> {this.props.nombre}</p>
                 <p class="font-weight-light">{this.props.direccion}</p>
             </button>
         );

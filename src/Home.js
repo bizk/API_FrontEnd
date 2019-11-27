@@ -3,12 +3,13 @@ import './components/App.css';
 import Login from "./Login";
 import App from './App';
 
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state  = {
-      userName : "",
-      role: ""
+      userName : "admin",
+      role: "admin"
     }
  }
 

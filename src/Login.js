@@ -1,6 +1,8 @@
 import React from 'react';
 import {render} from 'react-dom';
 
+import {User} from "react-feather";
+
 class Login extends React.Component {
   constructor(props) {
     super(props);
@@ -8,6 +10,7 @@ class Login extends React.Component {
       usuario: "",
       pwd:"",
       role:"",
+      loginStatus: false,
     }
  }
 
@@ -28,11 +31,24 @@ class Login extends React.Component {
    } else {
      this.setState({role: "usr"});
    }
+
    //We should fetch with the login uril here
    //
    //LOGIN URIL SHOULD BE UP HERE AND DO STH}
    var handleUsrChange = this.props.handleUsrChange;
    handleUsrChange(this.state.userName, this.state.role);
+ }
+
+ fetchLogin(e) {
+   const params={
+     usr:this.state.usuario,
+     pwd: this.state.pwd
+   }
+   axios.post("http://localhost:8080/apiRest/login", {params}).catch(error=> console.log(error));
+
+   axios.get("http://localhost:8080/apiRest/loggedSucces").then(response => {
+     this.setState(loginStatus: response.data.message);
+   }).catch(error=> console.log(error));
  }
 
   render() {
@@ -44,6 +60,7 @@ class Login extends React.Component {
       backgroundImage: "url("+ bckgImageUrl+ ")",
       backgroundColor:"black",
     }
+    const feather = require('feather-icons')
 
     return (
       <div class="bg-dark fill" style={backgroundImage}>

@@ -31,7 +31,7 @@ class App extends React.Component {
     };
   }
 
-  
+
   //Buttons handlers
   handleClickReclamosTab(e) {
     this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true, isPersonas: false}));
@@ -44,7 +44,7 @@ class App extends React.Component {
   }
 
   handleEdifSideBarChange(newEdif) {
-    this.setState({ edif: newEdif });
+    this.setState({ edif: {codigo: newEdif.id, nombre: newEdif.nombre, direccion: newEdif.direccion } });
   }
 
   render() {

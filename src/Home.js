@@ -14,7 +14,6 @@ class Home extends React.Component {
  }
 
  handleUsrChange(usr, role) {
-   console.log(usr);
    this.setState({userName: usr, role: role});
  }
 

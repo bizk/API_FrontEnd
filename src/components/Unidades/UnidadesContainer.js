@@ -24,9 +24,10 @@ export default class UnidadesContainer extends React.Component {
     const params = {codigo: this.state.edificio}
     axios.get("http://localhost:8080/API_ApiRest/getUnidadesPorEdificio", {params}).then(response => {
       //Array
-      const newUnidades = response.data.map(c => {
+      let newUnidades = response.data.map(c => {
         return {
           id: c.id,
+          identificador: c.identificador,
           piso: c.piso,
           numero: c.numero,
           habitado: c.habitado,

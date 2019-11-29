@@ -19,7 +19,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "reclamosTab",
+      tab: "unidadesTab",
       unidades: [],
       personas: [],
       edif: "1",
@@ -44,7 +44,7 @@ class App extends React.Component {
   }
 
   handleEdifSideBarChange(newEdif) {
-    this.setState({ edif: newEdif });
+    this.setState({ edif: {codigo: newEdif.id, nombre: newEdif.nombre, direccion: newEdif.direccion } });
   }
 
   render() {

@@ -19,7 +19,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "unidadesTab",
+      tab: "reclamosTab",
       unidades: [],
       personas: [],
       edif: "1",
@@ -31,7 +31,7 @@ class App extends React.Component {
     };
   }
 
-  
+
   //Buttons handlers
   handleClickReclamosTab(e) {
     this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true, isPersonas: false}));

@@ -14,10 +14,7 @@ class Login extends React.Component {
       role:"",
       loginStatus: false,
     }
- }
-
- componentDidMount() {
-
+    this.handleClickLogin = this.handleClickLogin.bind(this);
  }
 
  handleUsrChange(event) {
@@ -30,27 +27,25 @@ class Login extends React.Component {
  handleClickLogin(e){
    this.fetchLogin(e);
 
-   if (this.state.usuario === "admin" && this.state.pwd === "admin") {
-     this.setState({role: "admin"});
-   } else {
-     this.setState({role: "usr"});
+   if (this.state.loginStatus) {
+     if (this.state.usuario === "admin" && this.state.pwd === "admin") {
+       this.setState({role: "admin"});
+     } else {
+       this.setState({role: "usr"});
+     }
+     const handleUsrChange = this.props.handleUsrChange;
+     handleUsrChange(this.state.pwd, this.state.role);
    }
-
-
-   var handleUsrChange = this.props.handleUsrChange;
-   handleUsrChange(this.state.userName, this.state.role);
  }
 
- fetchLogin(e) {
+ async fetchLogin(e) {
    const params={
      usr:this.state.usuario,
      pwd: this.state.pwd
    }
-   console.log(params);
-   axios.post("http://localhost:8080/API_ApiRest/login", {params}).catch(error=> console.log(error));
+   axios.post("http://localhost:8080/API_ApiRest/login", null, {params}).catch(error=> console.log(error));
    axios.get("http://localhost:8080/API_ApiRest/loggedSucces").then(response => {
-     this.setState({loginStatus: response.data.message});
-     console.log(response.data);
+     this.setState({loginStatus: response.data});
    }).catch(error=> console.log(error));
  }
 
@@ -89,7 +84,7 @@ class Login extends React.Component {
               </div>
               <div class="pb-4 pt-2 d-flex justify-content-center ">
                 <button class="col-8 align-justify-content btn btn-info btm-rounded"
-                  onClick={this.handleClickLogin.bind(this)}>Iniciar sesion</button>
+                  onClick={this.handleClickLogin}>Iniciar sesion</button>
               </div>
             </div>
           </div>

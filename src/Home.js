@@ -8,13 +8,12 @@ class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state  = {
-      userName : "admin",
-      role: "admin"
+      userName : "",
+      role: ""
     }
  }
 
  handleUsrChange(usr, role) {
-   console.log(usr);
    this.setState({userName: usr, role: role});
  }
 

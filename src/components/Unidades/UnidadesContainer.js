@@ -17,23 +17,23 @@ export default class UnidadesContainer extends React.Component {
 
   componentDidMount() {
     this.fetchUnidades();
+    console.log(this.state.unidades);
   }
 
   fetchUnidades(e){
+    console.log("http://localhost:8080/API_ApiRest/getUnidadesPorEdificio?codigo=" + this.state.edificio);
     const param = {codigo: this.state.edificio}
-    axios.post("http://localhost:8080/API_ApiRest/getUnidadesPorEdificio", {param}).then(response => {
+    axios.get("http://localhost:8080/API_ApiRest/getUnidadesPorEdificio?codigo=" + this.state.edificio).then(response => {
       //Array
       const newUnidades = response.data.map(c => {
-        console.log(c);
         return {
-          identificador: c.identificador,
+          id: c.id,
           piso: c.piso,
           numero: c.numero,
           habitado: c.habitado,
-          codigoEdificio: c.codigoEdificio
+          edificio: c.edificio
         };
       });
-
       //Create a new state object
       let newState = Object.assign({}, this.state, {
         unidades: newUnidades
@@ -42,6 +42,7 @@ export default class UnidadesContainer extends React.Component {
       this.setState(newState);
     }).catch(error=> console.log(error));
   }
+
   fetchUnidad(e){
     axios.get("http://localhost:3001/unidades").then(response => {
       //Array
@@ -76,21 +77,42 @@ export default class UnidadesContainer extends React.Component {
 
   genericPutFetch3Param(url){
     const params = {
-      edificio: this.props.edificio,
-      piso: this.state.piso,
-      numero: this.state.numero,
-      dni: this.state.dni,
+      codigo: "1",
+      piso:"1",
+      numero: "2",
+      documento: "3",
     }
-    axios.post(url, {params}).catch(error=> console.log(error));
+    axios.post(url, null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
+  }
+  genericGetFetch3Param(url){
+    const param = {codigo: this.state.edificio}
+    axios.get(url+"?codigo="+this.state.edificio+"&piso="+this.state.piso+"&numero="+this.state.numero).then(response => {
+      //Array
+      const newUnidades = response.data.map(c => {
+        return {
+          id: c.id,
+          piso: c.piso,
+          numero: c.numero,
+          habitado: c.habitado,
+          edificio: c.edificio
+        };
+      });
+
+      //Create a new state object
+      let newState = Object.assign({}, this.state, {
+        unidades: newUnidades
+      });
+
+      this.setState(newState);
+    }).catch(error=> console.log(error));
   }
 
-  handleSubmitDuenios(event) {
-    alert(this.state.piso + " " + this.state.numero + " " + this.state.dni)
-    //Aca se llama al fetch de esa unidad y el fetch de los usuarios
-    event.preventDefault()
+  handleGetDuenios(event) {
+    this.genericGetFetch3Param("http://localhost:8080/API_ApiRest/dueniosPorUnidad");
+    event.preventDefault();
   }
-  handleSubmitInquilinos(event) {
-    alert("fetch inquilinos");
+  handleGetInquilinos(event) {
+    this.genericGetFetch3Param("http://localhost:8080/API_ApiRest/dueniosPorUnidad");
     event.preventDefault();
   }
   handleSubmitTransUnidad(event) {
@@ -152,10 +174,11 @@ export default class UnidadesContainer extends React.Component {
             </div>
             <div class="form-grup col-md-3">
               <button type="submitDueños" class="btn btn-info btn-block"
-                onClick={this.handleSubmitDuenios.bind(this)}>Ver dueños</button>
+                onClick={this.handleGetDuenios.bind(this)}>Ver dueños</button>
             </div>
             <div class="form-grup col-md-3">
-              <button type="submitInquilinos" class="btn btn-info btn-block" onClick={this.handleSubmitInquilinos.bind(this)}>Ver inquilinos</button>
+              <button type="submitInquilinos" class="btn btn-info btn-block"
+                onClick={this.handleGetInquilinos.bind(this)}>Ver inquilinos</button>
             </div>
             <div class="form-grup col-md-3">
               <button type="submitTransferir" class="btn btn-primary btn-block" onClick={this.handleSubmitTransUnidad.bind(this)}>Transferir unidad</button>

@@ -21,7 +21,7 @@ class SideBar extends React.Component {
         //Array
         const newEdificios = response.data.map(c => {
           return {
-            id: c.id,
+            id: c.codigo,
             direccion: c.direccion,
             nombre: c.nombre,
           };

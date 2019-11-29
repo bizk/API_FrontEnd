@@ -19,43 +19,19 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "personasTab",
+      tab: "unidadesTab",
       unidades: [],
       personas: [],
       edif: "1",
       isUnidades: true,
       isReclamos: false,
-      isPersonas: true,
+      isPersonas: false,
       userName : props.userName,
       role: props.role
     };
   }
 
-  async componentDidMount() {
-    this.fetchPersonas();
-  };
-
-  fetchPersonas(e) {
-    const params = {codigo: 1};
-    axios.post("http://localhost:8080/API_ApiRest/habilitadosPorEdificio", {params}).then(response => {
-      //Array
-      const newPersonas = response.data.map(c => {
-        return {
-          id: c.id,
-          documento: c.documento,
-          nombre: c.nombre,
-        };
-      });
-
-      //Create a new state object
-      let newState = Object.assign({}, this.state, {
-        personas: newPersonas
-      });
-
-      this.setState(newState);
-    }).catch(error=> console.log(error));
-  }
-
+  
   //Buttons handlers
   handleClickReclamosTab(e) {
     this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true, isPersonas: false}));

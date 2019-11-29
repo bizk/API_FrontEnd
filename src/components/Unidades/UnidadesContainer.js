@@ -8,7 +8,7 @@ export default class UnidadesContainer extends React.Component {
     super(props);
     this.state={
       unidades: [],
-      edificio:"",
+      edificio:props.edificio,
       piso:"",
       numero:"",
       dni:""
@@ -17,42 +17,22 @@ export default class UnidadesContainer extends React.Component {
 
   componentDidMount() {
     this.fetchUnidades();
+    console.log(this.state.unidades);
   }
 
   fetchUnidades(e){
-    axios.get("http://localhost:3001/unidades").then(response => {
+    const params = {codigo: this.state.edificio}
+    axios.get("http://localhost:8080/API_ApiRest/getUnidadesPorEdificio", {params}).then(response => {
       //Array
       const newUnidades = response.data.map(c => {
         return {
-          identificador: c.identificador,
+          id: c.id,
           piso: c.piso,
           numero: c.numero,
           habitado: c.habitado,
-          codigoEdificio: c.codigoEdificio
+          edificio: c.edificio
         };
       });
-
-      //Create a new state object
-      let newState = Object.assign({}, this.state, {
-        unidades: newUnidades
-      });
-
-      this.setState(newState);
-    }).catch(error=> console.log(error));
-  }
-  fetchUnidad(e){
-    axios.get("http://localhost:3001/unidades").then(response => {
-      //Array
-      let newUnidades = response.data.map(c => {
-        return {
-          identificador: c.identificador,
-          piso: c.piso,
-          numero: c.numero,
-          habitado: c.habitado,
-          codigoEdificio: c.codigoEdificio
-        };
-      });
-
       //Create a new state object
       let newState = Object.assign({}, this.state, {
         unidades: newUnidades
@@ -74,45 +54,66 @@ export default class UnidadesContainer extends React.Component {
 
   genericPutFetch3Param(url){
     const params = {
-      edificio:this.state.edificio,
+      codigo: this.state.edificio,
       piso: this.state.piso,
       numero: this.state.numero,
-      dni: this.state.dni,
+      documento: this.state.dni,
     }
-    axios.post(url, {params}).catch(error=> console.log(error));
+    axios.post(url, null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
+  }
+  genericGetFetch3Param(url){
+    const param = {codigo: this.state.edificio}
+    axios.get(url+"?codigo="+this.state.edificio+"&piso="+this.state.piso+"&numero="+this.state.numero).then(response => {
+      //Array
+      const newUnidades = response.data.map(c => {
+        return {
+          id: c.id,
+          piso: c.piso,
+          numero: c.numero,
+          habitado: c.habitado,
+          edificio: c.edificio
+        };
+      });
+
+      //Create a new state object
+      let newState = Object.assign({}, this.state, {
+        unidades: newUnidades
+      });
+
+      this.setState(newState);
+    }).catch(error=> console.log(error));
   }
 
-  handleSubmitDuenios(event) {
-    alert(this.state.piso + " " + this.state.numero + " " + this.state.dni)
-    //Aca se llama al fetch de esa unidad y el fetch de los usuarios
-    event.preventDefault()
+  handleGetDuenios(event) {
+    this.genericGetFetch3Param("http://localhost:8080/API_ApiRest/dueniosPorUnidad");
+    event.preventDefault();
   }
-  handleSubmitInquilinos(event) {
-    alert("fetch inquilinos");
+  handleGetInquilinos(event) {
+    this.genericGetFetch3Param("http://localhost:8080/API_ApiRest/inquilinosPorUnidad");
     event.preventDefault();
   }
   handleSubmitTransUnidad(event) {
-    this.genericPutFetch3Param("http://localhost:3001/transferirUnidad")
+    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/transferirUnidad")
     event.preventDefault();
   }
   handleSubmitAddDuenio(event) {
-    this.genericPutFetch3Param("http://localhost:3001/");
+    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/agregarDuenioUnidad");
     event.preventDefault();
   }
   handleSubmitAlquilar(event) {
-    this.genericPutFetch3Param("http://localhost:3001/");
+    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/alquilarUnidad");
     event.preventDefault();
   }
   handleSubmitAddInquilino(event) {
-    this.genericPutFetch3Param("http://localhost:3001/");
+    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/agregarInquilinoUnidad");
     event.preventDefault();
   }
   handleSubmitLiberar(event) {
-    this.genericPutFetch3Param("http://localhost:3001/");
+    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/liberarUnidad");
     event.preventDefault();
   }
   handleSubmitHabitar(event) {
-    this.genericPutFetch3Param("http://localhost:3001/");
+    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/habitarUnidad");
     event.preventDefault();
   }
 
@@ -148,29 +149,22 @@ export default class UnidadesContainer extends React.Component {
                   name="inputDni"
                   placeholder="DNI" />
             </div>
-            <div class="form-grup col-md-3">
-              <button type="submitDueños" class="btn btn-info btn-block"
-                onClick={this.handleSubmitDuenios.bind(this)}>Ver dueños</button>
-            </div>
-            <div class="form-grup col-md-3">
-              <button type="submitInquilinos" class="btn btn-info btn-block" onClick={this.handleSubmitInquilinos.bind(this)}>Ver inquilinos</button>
-            </div>
-            <div class="form-grup col-md-3">
+            <div class="form-grup col-md-4 mt-2">
               <button type="submitTransferir" class="btn btn-primary btn-block" onClick={this.handleSubmitTransUnidad.bind(this)}>Transferir unidad</button>
             </div>
-            <div class="form-grup col-md-3">
+            <div class="form-grup col-md-4 mt-2">
               <button type="submitAgregarDuenio" class="btn btn-primary btn-block" onClick={this.handleSubmitAddDuenio.bind(this)}>Agregar Duenio</button>
             </div>
-            <div class="form-grup col-md-3 mt-2">
+            <div class="form-grup col-md-4 mt-2">
               <button type="submitAlquilar" class="btn btn-primary btn-block" onClick={this.handleSubmitAlquilar.bind(this)}>Alquilar</button>
             </div>
-            <div class="form-grup col-md-3 mt-2">
+            <div class="form-grup col-md-4 mt-2">
               <button type="submitAgregarInquilino" class="btn btn-primary btn-block " onClick={this.handleSubmitAddInquilino.bind(this)}>Agregar Inquilino</button>
             </div>
-            <div class="form-grup col-md-3 mt-2">
+            <div class="form-grup col-md-4 mt-2">
               <button type="submitLiberar" class="btn btn-primary btn-block" onClick={this.handleSubmitLiberar.bind(this)}>Liberar</button>
             </div>
-            <div class="form-grup col-md-3 mt-2">
+            <div class="form-grup col-md-4 mt-2">
               <button type="submitHabitar" class="btn btn-primary btn-block" onClick={this.handleSubmitHabitar.bind(this)}>Habitar</button>
             </div>
           </div>

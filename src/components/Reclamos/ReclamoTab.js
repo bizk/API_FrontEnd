@@ -11,6 +11,12 @@ export class ReclamoTab extends React.Component {
   }
 
   render() {
+    let ubic = (typeof this.props.reclamo.unidad !== 'undefined' ? (<div class="row">
+    <p class="barra_texto">Unidad: {this.props.reclamo.unidad.piso}-{this.props.reclamo.unidad.numero}</p>
+  </div>) :
+  (<div class="row">
+    <p class="barra_texto">En: {this.props.reclamo.ubicacion}</p>
+  </div>))
     return (
       <div class="m-1 flex px-4 pt-2 bg-secondary rounded ">
         <div class="row">
@@ -35,18 +41,12 @@ export class ReclamoTab extends React.Component {
             <div class="row">
               <p class="barra_texto">Edificio: {this.props.reclamo.edificio.nombre}</p>
             </div>
-            <div class="row">
-              <p class="barra_texto">Unidad: {this.props.reclamo.unidad.piso}-{this.props.reclamo.unidad.numero}</p>
-            </div>
-            <div class="row">
-              <p class="barra_texto">En: {this.props.reclamo.ubicacion}</p>
-            </div>
+            {ubic}
           </div>
         </div>
         
      <div class="row p-2">
-          {/*<img src="https://placekitten.com/128/128" class="img-responsive rounded barra"></img>*/}
-          <ImagenesPorReclamo imagenes={this.props.reclamo.imagenes}></ImagenesPorReclamo>
+          <ImagenesPorReclamo nroreclamo={this.props.reclamo.idReclamo}></ImagenesPorReclamo>
         </div>
       </div>
     )

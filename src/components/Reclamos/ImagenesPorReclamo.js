@@ -1,27 +1,81 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
+import { Button, Carousel } from 'react-bootstrap';
+import axios from 'axios';
 class ImagenesPorReclamo extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
-        mostrar: false
+        mostrar: false,
+        imagenes:[],
+        urlimagenes:[]
       }
+      this.changeMostrar = this.changeMostrar.bind(this);
+    }
+    
+    changeMostrar(){
+        let nuevoEstado = !this.state.mostrar
+        this.setState({
+            mostrar: nuevoEstado
+        })
+
     }
 
 
+    componentDidMount(){
+        let url= 'http://localhost:8080/apiRest/imagenesPorReclamo?nroreclamo='+this.props.nroreclamo
+      axios.get(url).then(response =>
+        this.setState({
+            imagenes: response.data
+        })
+      )
+    }
+
     render() {
     let button;
-        if(!this.props.imagenes.lenght > 0){
+    
+        if(this.state.imagenes.lenght === 0){
             button = <Button type="button" variant="primary" disabled block>Este reclamo no tiene imagenes </Button>
         } else if (!this.mostrar) {
-            button = <Button type="button" variant="primary" block>Ver album</Button>
+            button = <Button type="button" variant="primary" block onClick={this.changeMostrar}>Ver album</Button>
         } else {
-            button = <Button type="button" variant="primary" block>Cerrar album</Button>
+            button = <Button type="button" variant="primary" block onClick={this.changeMostrar}>Cerrar album</Button>
         }
+        let itemscarousel = (this.state.imagenes.map(item =>  
+            {return (item == 404 ? 
+                (<Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src= 'https://cdn.rswebsols.com/wp-content/uploads/2018/02/404-error-not-found.jpg'
+                        alt="La imagen ha sido borrada de la nube o su acceso ha sido actualizado."
+                        />
+                </Carousel.Item> ) : 
+                (<Carousel.Item>
+                    <img
+                        className="d-block w-100"
+                        src= {item.direccion}
+                        alt="Imagen del reclamo"
+                        />
+                </Carousel.Item>) )             
+            }))
+    
+        console.log('items ' + itemscarousel)
+           
+
+        {/* {return (link ===404 ? (<div/>)  : (<Carousel.Item>
+                <img
+                    className="d-block w-100"
+                    src= {link}
+                    alt="slide"
+                 />
+            </Carousel.Item>))})})) */}
 
         return (  
         <div class="flex col-12">
-            {button}
+           
+            {this.state.mostrar ?  (<Carousel>
+            {itemscarousel}
+        </Carousel>) : <div/>}
+        {button}
         </div>
         )
     }

@@ -24,12 +24,16 @@ class AgregarReclamoModal extends React.Component {
         this.agregarImagenes =this.agregarImagenes.bind(this);
     }
 
-    handleSubmit(event) {
-        this.agregarReclamo();
-        this.agregarImagenes();
-        event.preventDefault();
+    handleSubmit(e) {
+        e.preventDefault();
+        this.agregarReclamo( () => {
+        if(this.state.archivos.length>0) {
+            console.log('Entra')
+            this.agregarImagenes(this.state.numeroReclamo)
+        }});
+       
     }
-    agregarReclamo() {
+    agregarReclamo(callback) {
         let url= 'http://localhost:8080/apiRest/agregarReclamo?codigo='+this.props.edificio.codigo+'&piso='+this.state.piso+'&numero='+this.state.numeroUnidad+'&ubicacion='+this.state.ubicacion+'&documento='+encodeURIComponent(this.props.usuario)+'&descripcion='+encodeURIComponent(this.state.descripcion)
         console.log(url)
          axios.post(url).then(response =>{
@@ -37,15 +41,37 @@ class AgregarReclamoModal extends React.Component {
                 numeroReclamo:response.data.nroreclamo
             })
          })
+         callback();
+
         
     }
-    agregarImagenes(){
-        
+    agregarImagenes(nroreclamo){
+        for(var i = 0; i < this.state.archivos.length; i++){
+        /* Lets build a FormData object*/
+        var fd = new FormData(); // I wrote about it: https://hacks.mozilla.org/2011/01/how-to-develop-a-html5-image-uploader/
+        fd.append("image", this.state.archivos.item(i)); // Append the file
+        axios.post('https://api.imgur.com/3/image', fd, {
+            headers: {
+                 'Content-Type': 'multipart/form-data',
+                 'Authorization' : 'Client-ID b01d63b19d0a499'
+             }
+    }).then(response =>
+        {
+            console.log(this.state.numeroReclamo)
+            let urlimg=response.data.data.link
+            let url='http://localhost:8080/apiRest/agregarImagenReclamo?nroreclamo='+this.state.numeroReclamo+'&id='+encodeURIComponent(urlimg)
+            axios.post(url)
+        });
+  
     }
+}     
+
+        
+    
     componentDidMount(){
-        {console.log(axios.get('https://api.imgur.com/3/image/unLTBct', {headers : {Authorization: 'Client-ID b01d63b19d0a499' } }).then(response =>{
+        {/*console.log(axios.get('https://api.imgur.com/3/image/unLTBct', {headers : {Authorization: 'Client-ID b01d63b19d0a499' } }).then(response =>{
                     return response.data.data.link
-                }))}
+                }))*/}
     }
 
     handleInputChange(event) {
@@ -65,7 +91,8 @@ class AgregarReclamoModal extends React.Component {
             <div class="container-fluid m-1 bg-info rounded pt-2 pb-3">
                 <h3>Agrega un nuevo reclamo</h3>
                 <div class="form-group">
-                    <form onSubmit={this.handleSubmit}>
+                    <form onSubmit={
+                            this.handleSubmit}>
                         <div class="row align-items-center my-1">
                             <div class="column col-1" />
                             <div class="column col-4">

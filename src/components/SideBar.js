@@ -17,11 +17,7 @@ class SideBar extends React.Component {
     }
 
     fetchEdificios(e) {
-<<<<<<< HEAD
       axios.get("http://localhost:8080/apiRest/getEdificios").then(response => {
-=======
-      axios.get("http://localhost:8080/API_ApiRest/getEdificios").then(response => {
->>>>>>> 123576b09ed6ecc3952aaf7cb468849bac656367
         //Array
         const newEdificios = response.data.map(c => {
           return {

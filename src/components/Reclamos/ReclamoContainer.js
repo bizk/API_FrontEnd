@@ -9,16 +9,10 @@ export default class ReclamoContainer extends React.Component {
         super(props);
         this.state = {
             reclamos: [],
-            //Datos heredados -- A leer directamente del props.
-            usuarioActivo: "CI 13230978",
             //Estados
             isOpenAgregarReclamoModal: false
         }
 
-
-    }
-    componentWillMount() {
-        this.fetchReclamos();
 
     }
 
@@ -43,7 +37,6 @@ export default class ReclamoContainer extends React.Component {
                 }))
             }else{
             //Array
-            console.log(response.data)
             let newReclamos = response.data.map(c => {
                 return {
                     idReclamo: c.numero,
@@ -60,11 +53,16 @@ export default class ReclamoContainer extends React.Component {
                 reclamos: newReclamos
             }))
         }
-        })
+        }).catch(e => alert("El reclamo no existe!"))
 
     }
+    handleReclamosPorPersona (){
+        let dnipersona = prompt("Ingrese identificador de persona", "CI 13230978")
+        let url = "http://localhost:8080/apiRest/reclamosPorPersona?documento="+dnipersona
+        this.fetchReclamos(url)
+    }
     handleMisReclamos(){
-        let url = "http://localhost:8080/apiRest/reclamosPorPersona?documento="+this.state.usuarioActivo
+        let url = "http://localhost:8080/apiRest/reclamosPorPersona?documento="+this.props.usuario
         this.fetchReclamos(url)
     }
     handleReclamosMisEdificios(){
@@ -91,7 +89,7 @@ export default class ReclamoContainer extends React.Component {
         let form;
         if (this.state.isOpenAgregarReclamoModal) {
             form = (<div>
-                <AgregarReclamoModal edificio={this.props.edificio} usuario ={this.state.usuarioActivo /*TODO cambiar cuando se termine login*/}/> 
+                <AgregarReclamoModal edificio={this.props.edificio} usuario ={this.props.usuario}/> 
                 <button type="button" class="btn btn-warning" onClick={this.toggleAgregarReclamoModal.bind(this)}>Cancelar</button>
             </div>)
         
@@ -100,13 +98,15 @@ export default class ReclamoContainer extends React.Component {
         return (
             <div class="mt-2">
                 <div class="btn-group btn-group-toggle col-12">
-                    <button type="button" class="btn btn-secondary" onClick={this.handleMisReclamos.bind(this)}>Mis reclamos</button>
+                    {this.props.role === 'user' ? (<button type="button" class="btn btn-secondary" onClick={this.handleMisReclamos.bind(this)}>Mis reclamos</button>): 
+                    (<button type="button" class="btn btn-secondary" onClick={this.handleReclamosPorPersona.bind(this)}>Reclamos Por Persona</button>) }
                     <button type="button" class="btn btn-secondary" onClick={this.handleReclamosMisEdificios.bind(this)}>Reclamos en este edificio</button>
                     <button type="button" class="btn btn-secondary" onClick={this.handleReclamoPorNumero.bind(this)}>Buscar reclamo por numero</button>
-                    <button type="button" class="btn btn-primary" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar reclamo en éste edificio</button>
+                    {this.props.role ==='user' ? (<button type="button" class="btn btn-primary" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar reclamo en éste edificio</button> ) :
+                    <div/>}
                 </div>
                 {form}
-                <ReclamoList reclamos={this.state.reclamos}></ReclamoList>
+                <ReclamoList reclamos={this.state.reclamos} role={this.props.role}></ReclamoList>
         
             </div>
 

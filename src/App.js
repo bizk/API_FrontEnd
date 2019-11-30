@@ -19,7 +19,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "unidadesTab",
+      tab: 'reclamosTab',
       unidades: [],
       personas: [],
       edif: {},
@@ -56,7 +56,7 @@ class App extends React.Component {
     } else if (tabPosition === "personasTab") {
       bodyContainer = <UsuariosContainer edificio={this.state.edif}/>;
     } else if (tabPosition === "reclamosTab") {
-      bodyContainer = <ReclamoContainer edificio={this.state.edif}></ReclamoContainer>
+      bodyContainer = <ReclamoContainer usuario= {this.state.userName} role={this.state.role} edificio={this.state.edif}></ReclamoContainer>
     };
 
     return (

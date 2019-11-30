@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
-import ImagenesPorReclamo from './ImagenesPorReclamo'
+import ImagenesPorReclamo from './ImagenesPorReclamo';
+import CambiarEstadoReclamo from './CambiarEstadoReclamo';
+
 
 export class ReclamoTab extends React.Component {
   constructor(props) {
@@ -48,7 +49,13 @@ export class ReclamoTab extends React.Component {
      <div class="row p-2">
           <ImagenesPorReclamo key={'img'+this.props.reclamo.idReclamo} nroreclamo={this.props.reclamo.idReclamo}></ImagenesPorReclamo>
         </div>
+      {
+        this.props.role === 'admin' ? (<div class="row p-2"> 
+           <CambiarEstadoReclamo nroreclamo = {this.props.reclamo.idReclamo}></CambiarEstadoReclamo> 
+        </div>):<div/>
+      }
       </div>
+
     )
       ;
   }

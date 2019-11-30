@@ -6,7 +6,7 @@ import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
-
+import { Home, Users, MessageSquare } from "react-feather";
 
 // import UnidadTab from './Components.js';
 
@@ -19,40 +19,18 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "reclamosTab",
+      tab: "unidadesTab",
       unidades: [],
       personas: [],
       edif: {},
       isUnidades: true,
       isReclamos: false,
-      isPersonas: true,
-      role:"user"
+      isPersonas: false,
+      userName : props.userName,
+      role: props.role
     };
   }
 
-  componentDidMount() {
-    this.fetchPersonas();
-  };
-
-  fetchPersonas(e) {
-    axios.get("http://localhost:8080/apiRest/getPersonas").then(response => {
-      //Array
-      const newPersonas = response.data.map(c => {
-        return {
-          id: c.id,
-          documento: c.documento,
-          nombre: c.nombre,
-        };
-      });
-
-      //Create a new state object
-      let newState = Object.assign({}, this.state, {
-        personas: newPersonas
-      });
-
-      this.setState(newState);
-    }).catch(error=> console.log(error));
-  }
 
   //Buttons handlers
   handleClickReclamosTab(e) {
@@ -94,15 +72,16 @@ class App extends React.Component {
                   <ul class="navbar-nav mr-auto">
                     {this.state.role === "admin" ? (<li class= "nav-item">
                       <button type="button" class={"btn " + (this.state.isUnidades ? "btn-secondary" : "btn-dark")}
-                              onClick={this.handleClickUnidadesTab.bind(this)}>Unidades</button>
+                              onClick={this.handleClickUnidadesTab.bind(this)}><Home color="#FFFFFF" size="18" /> Unidades</button>
                     </li>) : <div/>}
                     {this.state.role === "admin" ? (<li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isPersonas ? "btn-secondary" : "btn-dark")}
-                              onClick={this.handleClickPersonasTab.bind(this)}>Personas</button>
+                              onClick={this.handleClickPersonasTab.bind(this)}><Users color="#FFFFFF" size="18"/> Personas</button>
                     </li>) : <div/>}
                     <li class={"nav-item "}>
                       <button type="button" class={"btn " + (this.state.isReclamos ? "btn-secondary" : "btn-dark")}
-                              onClick={this.handleClickReclamosTab.bind(this)}>Reclamos</button>
+                              onClick={this.handleClickReclamosTab.bind(this)}>
+                              <MessageSquare color="#FFFFFF" size="18"/> Reclamos</button>
                     </li>
                   </ul>
                  </div>

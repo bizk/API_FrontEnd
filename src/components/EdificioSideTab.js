@@ -1,10 +1,10 @@
 import React from "react";
+import { Tablet } from "react-feather";
 
 export default class EdificioSideTab extends React.Component {
     constructor(props){
         super();
      }
-
 
     render() {
         var handleChildClick = this.props.handleChildClick;

@@ -46,7 +46,7 @@ export class ReclamoTab extends React.Component {
         </div>
         
      <div class="row p-2">
-          <ImagenesPorReclamo nroreclamo={this.props.reclamo.idReclamo}></ImagenesPorReclamo>
+          <ImagenesPorReclamo key={'img'+this.props.reclamo.idReclamo} nroreclamo={this.props.reclamo.idReclamo}></ImagenesPorReclamo>
         </div>
       </div>
     )

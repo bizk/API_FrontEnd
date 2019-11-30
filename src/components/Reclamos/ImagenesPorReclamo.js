@@ -1,13 +1,13 @@
 import React from 'react';
 import { Button, Carousel } from 'react-bootstrap';
 import axios from 'axios';
+import AlbumBoton from './AlbumBoton';
 class ImagenesPorReclamo extends React.Component {
     constructor(props) {
       super(props)
       this.state = {
         mostrar: false,
         imagenes:[],
-        urlimagenes:[]
       }
       this.changeMostrar = this.changeMostrar.bind(this);
     }
@@ -75,7 +75,7 @@ class ImagenesPorReclamo extends React.Component {
             {this.state.mostrar ?  (<Carousel>
             {itemscarousel}
         </Carousel>) : <div/>}
-        {button}
+        <AlbumBoton key= {'btn'+this.props.nroreclamo} imgs={this.state.imagenes.lenght} onClick={this.changeMostrar} mostrar={this.state.mostrar} />
         </div>
         )
     }

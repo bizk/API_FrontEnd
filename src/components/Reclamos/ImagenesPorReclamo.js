@@ -31,15 +31,6 @@ class ImagenesPorReclamo extends React.Component {
     }
 
     render() {
-    let button;
-    
-        if(this.state.imagenes.lenght === 0){
-            button = <Button type="button" variant="primary" disabled block>Este reclamo no tiene imagenes </Button>
-        } else if (!this.mostrar) {
-            button = <Button type="button" variant="primary" block onClick={this.changeMostrar}>Ver album</Button>
-        } else {
-            button = <Button type="button" variant="primary" block onClick={this.changeMostrar}>Cerrar album</Button>
-        }
         let itemscarousel = (this.state.imagenes.map(item =>  
             {return (item == 404 ? 
                 (<Carousel.Item>

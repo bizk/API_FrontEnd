@@ -17,7 +17,7 @@ class SideBar extends React.Component {
     }
 
     fetchEdificios(e) {
-      axios.get("http://localhost:8080/API_ApiRest/getEdificios").then(response => {
+      axios.get("http://localhost:8080/apiRest/getEdificios").then(response => {
         //Array
         const newEdificios = response.data.map(c => {
           return {
@@ -45,7 +45,7 @@ class SideBar extends React.Component {
       return (
         <div class="col-2 hidden-md-down bg-dark">
           {this.state.edificios.map(c=><EdificioSideTab handleChildClick={this.handleChildClick.bind(this)} key={c.id}
-                nombre={c.nombre} direccion={c.direccion} id={c.id} edificio={this.props.edificio}/>)}
+                edif={c}/>)}
         </div>
       );
     }

@@ -43,8 +43,8 @@ class Login extends React.Component {
      usr:this.state.usuario,
      pwd: this.state.pwd
    }
-   axios.post("http://localhost:8080/API_ApiRest/login", null, {params}).catch(error=> console.log(error));
-   axios.get("http://localhost:8080/API_ApiRest/loggedSucces").then(response => {
+   axios.post("http://localhost:8080/apiRest/login", null, {params}).catch(error=> console.log(error));
+   axios.get("http://localhost:8080/apiRest/loggedSucces").then(response => {
      this.setState({loginStatus: response.data});
    }).catch(error=> console.log(error));
  }

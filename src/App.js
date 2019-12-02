@@ -21,20 +21,57 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: "unidadesTab",
+      tab: "reclamosTab",
       unidades: [],
       personas: [],
       edif: "1",
-      isUnidades: true,
-      isReclamos: false,
+      isUnidades: false,
+      isReclamos: true,
       isPersonas: false,
       userName : props.userName,
       role: props.role,
+      edificios: [],
       bodyContainer: <div></div>
     };
    }
 
 
+  componentDidMount(){
+    if(this.state.role =='usr') {
+      axios.get('http://localhost:8080/apiRest/getUsrInfo').then(response => {    
+     const edif = response.data.map(e => {
+        return {
+          id : e.idEdif,
+          direccion : e.direccion,
+          nombre : e.nombre,
+          inquilinoEn : e.inquilino,
+          duenioEn : e.duenio
+        }})
+
+        this.setState({
+          edificios : edif
+        })
+      })
+    } else {
+      axios.get("http://localhost:8080/apiRest/getEdificios").then(response => {
+        //Array
+        const newEdificios = response.data.map(c => {
+          return {
+            id: c.codigo,
+            direccion: c.direccion,
+            nombre: c.nombre,
+          };
+        });
+
+        this.setState({
+          edificios: newEdificios,
+        });
+      }).catch(error=> console.log(error));
+    }
+
+
+
+  }
   //Buttons handlers
   handleClickReclamosTab(e) {
     this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true, isPersonas: false}));
@@ -52,7 +89,7 @@ class App extends React.Component {
   }
 
   handleEdifSideBarChange(newEdif) {
-    this.setState({ edif: {codigo: newEdif.id, nombre: newEdif.nombre, direccion: newEdif.direccion } });
+    this.setState({ edif: {codigo: newEdif.id, nombre: newEdif.nombre, direccion: newEdif.direccion, inquilinoEn: newEdif.inquilinoEn, duenioEn: newEdif.duenioEn} });
   }
 
   componentDidUpdate() {
@@ -61,7 +98,7 @@ class App extends React.Component {
     } else if (this.state.tab === "personasTab") {
       this.state.bodyContainer = <UsuariosContainer edificio={this.state.edif.codigo}/>;
     } else if (this.state.tab === "reclamosTab") {
-      this.state.bodyContainer = <ReclamoContainer edificio={this.state.edif.codigo}></ReclamoContainer>
+      this.state.bodyContainer = <ReclamoContainer edificio={this.state.edif} role={this.state.role}></ReclamoContainer>
     };
   }
 
@@ -73,7 +110,7 @@ class App extends React.Component {
     } else if (this.state.tab === "personasTab") {
       this.state.bodyContainer = <UsuariosContainer edificio={this.state.edif.codigo}/>;
     } else if (this.state.tab === "reclamosTab") {
-      this.state.bodyContainer = <ReclamoContainer edificio={this.state.edif.codigo}></ReclamoContainer>
+      this.state.bodyContainer = <ReclamoContainer usuario= {this.state.userName} edificio={this.state.edif} role={this.state.role}></ReclamoContainer>
     };
 
     return (
@@ -107,7 +144,7 @@ class App extends React.Component {
 
           <div class="container-fluid">
             <div class="row justify-content-center">
-              { this.state.role==="admin" ? <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> : <div/>}
+              <SideBar edificios= {this.state.edificios} handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> 
               <div class="col-10 fill">
                 {this.state.bodyContainer}
               </div>

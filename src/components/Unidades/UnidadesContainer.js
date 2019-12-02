@@ -22,7 +22,7 @@ export default class UnidadesContainer extends React.Component {
 
   fetchUnidades(e){
     const params = {codigo: this.state.edificio}
-    axios.get("http://localhost:8080/API_ApiRest/getUnidadesPorEdificio", {params}).then(response => {
+    axios.get("http://localhost:8080/apiRest/getUnidadesPorEdificio", {params}).then(response => {
       //Array
       let newUnidades = response.data.map(c => {
         return {
@@ -92,35 +92,35 @@ export default class UnidadesContainer extends React.Component {
   }
 
   handleGetDuenios(event) {
-    this.genericGetFetch3Param("http://localhost:8080/API_ApiRest/dueniosPorUnidad");
+    this.genericGetFetch3Param("http://localhost:8080/apiRest/dueniosPorUnidad");
     event.preventDefault();
   }
   handleGetInquilinos(event) {
-    this.genericGetFetch3Param("http://localhost:8080/API_ApiRest/inquilinosPorUnidad");
+    this.genericGetFetch3Param("http://localhost:8080/apiRest/inquilinosPorUnidad");
     event.preventDefault();
   }
   handleSubmitTransUnidad(event) {
-    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/transferirUnidad")
+    this.genericPutFetch3Param("http://localhost:8080/apiRest/transferirUnidad")
     event.preventDefault();
   }
   handleSubmitAddDuenio(event) {
-    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/agregarDuenioUnidad");
+    this.genericPutFetch3Param("http://localhost:8080/apiRest/agregarDuenioUnidad");
     event.preventDefault();
   }
   handleSubmitAlquilar(event) {
-    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/alquilarUnidad");
+    this.genericPutFetch3Param("http://localhost:8080/apiRest/alquilarUnidad");
     event.preventDefault();
   }
   handleSubmitAddInquilino(event) {
-    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/agregarInquilinoUnidad");
+    this.genericPutFetch3Param("http://localhost:8080/apiRest/agregarInquilinoUnidad");
     event.preventDefault();
   }
   handleSubmitLiberar(event) {
-    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/liberarUnidad");
+    this.genericPutFetch3Param("http://localhost:8080/apiRest/liberarUnidad");
     event.preventDefault();
   }
   handleSubmitHabitar(event) {
-    this.genericPutFetch3Param("http://localhost:8080/API_ApiRest/habitarUnidad");
+    this.genericPutFetch3Param("http://localhost:8080/apiRest/habitarUnidad");
     event.preventDefault();
   }
 

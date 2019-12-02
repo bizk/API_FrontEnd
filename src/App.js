@@ -48,6 +48,8 @@ class App extends React.Component {
   handleClickSalir(e){
     axios.post("http://localhost:8080/API_ApiRest/logOff").then(res => console.log(res)).catch(error=> console.log(error));
     this.setState(state => ({userName: "", role: ""}));
+    var handleLogOff = this.props.handleLogOff;
+    handleLogOff();
     this.handleClickReclamosTab();
   }
 
@@ -102,6 +104,7 @@ class App extends React.Component {
                     </li>
                   </ul>
                  </div>
+                 <button type="button" class="btn btn-dark" onClick={this.handleClickSalir.bind(this)}><LogOut color="#FFFFFF" size="18"/> SALIR</button>
             </Nav>
           </header>
 

@@ -18,8 +18,8 @@ class Home extends React.Component {
  }
 
  handleLogOff() {
-   this.setState({userName: "", role:" "});
- }
+   this.setState({userName: null, role:null});
+}
 
   render() {
     return (

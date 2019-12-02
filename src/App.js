@@ -19,16 +19,17 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      tab: 'reclamosTab',
+      tab: "unidadesTab",
       unidades: [],
       personas: [],
-      edif: {},
+      edif: "1",
       isUnidades: true,
       isReclamos: false,
       isPersonas: false,
       userName : props.userName,
       role: props.role,
-      edificios: []
+      edificios: [],
+      bodyContainer: <div></div>
     };
   }
 
@@ -84,16 +85,25 @@ class App extends React.Component {
     this.setState({ edif: {codigo: newEdif.id, nombre: newEdif.nombre, direccion: newEdif.direccion, inquilinoEn: newEdif.inquilinoEn, duenioEn: newEdif.duenioEn} });
   }
 
+  componentDidUpdate() {
+    if (this.state.tab === "unidadesTab") {
+      // this.setState({bodyContainer: <UnidadesContainer edificio={this.state.edif.codigo}/>})
+    } else if (this.state.tab === "personasTab") {
+      this.state.bodyContainer = <UsuariosContainer edificio={this.state.edif.codigo}/>;
+    } else if (this.state.tab === "reclamosTab") {
+      this.state.bodyContainer = <ReclamoContainer edificio={this.state.edif.codigo}></ReclamoContainer>
+    };
+  }
+
   render() {
     const tabPosition = this.state.tab;
-    let bodyContainer;
     //Dymamic generation of components inside the body container
-    if (tabPosition === "unidadesTab") {
-      bodyContainer =  <UnidadesContainer edificio={this.state.edif}/>;
-    } else if (tabPosition === "personasTab") {
-      bodyContainer = <UsuariosContainer edificio={this.state.edif}/>;
-    } else if (tabPosition === "reclamosTab") {
-      bodyContainer = <ReclamoContainer usuario= {this.state.userName} role={this.state.role} edificio={this.state.edif}></ReclamoContainer>
+    if (this.state.tab === "unidadesTab") {
+      this.state.bodyContainer =  <UnidadesContainer edificio={this.state.edif.codigo}/>;
+    } else if (this.state.tab === "personasTab") {
+      this.state.bodyContainer = <UsuariosContainer edificio={this.state.edif.codigo}/>;
+    } else if (this.state.tab === "reclamosTab") {
+      this.state.bodyContainer = <ReclamoContainer edificio={this.state.edif.codigo}></ReclamoContainer>
     };
 
     return (
@@ -129,7 +139,7 @@ class App extends React.Component {
             <div class="row justify-content-center">
               <SideBar edificios= {this.state.edificios} handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> 
               <div class="col-10 fill">
-                {bodyContainer}
+                {this.state.bodyContainer}
               </div>
             </div>
           </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { opaqueType } from '@babel/types';
 
 
 class AgregarReclamoModal extends React.Component {
@@ -10,8 +11,7 @@ class AgregarReclamoModal extends React.Component {
             numeroReclamo: '',
             descripcion: '',
             ubicacion: '',
-            piso: '',
-            numeroUnidad: '',
+            pisoYNumero:'',
             radioopt: '',
             imagenes:[],
             archivos:{},
@@ -22,6 +22,7 @@ class AgregarReclamoModal extends React.Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         this.agregarReclamo = this.agregarReclamo.bind(this);
         this.agregarImagenes =this.agregarImagenes.bind(this);
+        
     }
 
     handleSubmit(e) {
@@ -34,7 +35,7 @@ class AgregarReclamoModal extends React.Component {
        
     }
     agregarReclamo(callback) {
-        let url= 'http://localhost:8080/apiRest/agregarReclamo?codigo='+this.props.edificio.codigo+'&piso='+this.state.piso+'&numero='+this.state.numeroUnidad+'&ubicacion='+this.state.ubicacion+'&documento='+encodeURIComponent(this.props.usuario)+'&descripcion='+encodeURIComponent(this.state.descripcion)
+        let url= 'http://localhost:8080/apiRest/agregarReclamo?codigo='+this.props.edificio.codigo+this.state.pisoYNumero+'&ubicacion='+this.state.ubicacion+'&documento='+encodeURIComponent(this.props.usuario)+'&descripcion='+encodeURIComponent(this.state.descripcion)
         console.log(url)
          axios.post(url).then(response =>{
             this.setState({
@@ -84,7 +85,16 @@ class AgregarReclamoModal extends React.Component {
         });
     }
 
+    
     render() {
+        let unidadesinq = (
+            this.props.edificio.inquilinoEn.map(opt => {return (<option value={'&piso='+opt.piso+'&numero='+opt.numero}>Piso {opt.piso} - Numero {opt.numero}</option>)}
+        )
+        );
+        let unidadesdue = (
+            this.props.edificio.duenioEn.map(opt => {return (!opt.habitado ? <option value={'&piso='+opt.piso+'&numero='+opt.numero}>Piso {opt.piso} - Numero {opt.numero}</option> : <div/>)}
+        )
+        );
 
 
         return (
@@ -149,6 +159,7 @@ class AgregarReclamoModal extends React.Component {
                                 (<div class="column col-3">
                                     <label>  Lugar: </label>
                                     <select class="form-control" name="ubicacion" onChange={this.handleInputChange}>
+                                        <option>Seleccione...</option>
                                         <option value="SUM">SUM</option>
                                         <option value="Lobby">Lobby</option>
                                         <option value="Ascensor">Ascensor</option>
@@ -156,11 +167,14 @@ class AgregarReclamoModal extends React.Component {
                                         <option value="Lavanderia">Lavandería</option>
                                         <option value="Piscina">Piscina</option>
                                         <option value="Cocheras">Cocheras</option>
+                                        <option value="Otros">Otros</option>
                                     </select>
                                 </div>) : this.state.radioopt === "miunidad" ? (<div class="column col-3">
                                     <label>  Unidad: </label>
-                                    <select class="form-control" name="unidad" onChange={this.handleInputChange}>
-
+                                    <select class="form-control" name="pisoYNumero" onChange={this.handleInputChange}>
+                                        <option>Seleccione...</option>
+                                        {unidadesinq}
+                                        {unidadesdue}
                                     </select>
                                 </div>) : (<div class="column col-3">
                                     <label>Selecciona una ubicación primero</label>

@@ -129,8 +129,8 @@ export default class UsuariosContainer extends React.Component {
     return (
       <div class="mt-2">
         <div class="btn-group btm-group-toggle col-12">
-          <button type="button" class="btn btn-secondary" onClick={this.handleClickHabitantes.bind(this)}>Habitantes</button>
-          <button type="button" class="btn btn-secondary" onClick={this.handleClickHabilitadosEdif.bind(this)}>Habilitados</button>
+          {/*<button type="button" class="btn btn-secondary" onClick={this.handleClickHabitantes.bind(this)}>Habitantes</button>*/}
+          <button type="button" class="btn btn-secondary" onClick={this.handleClickHabilitadosEdif.bind(this)}>Habitantes</button>
           <button type="button" class="btn btn-secondary" onClick={this.handleClickDueniosEdif.bind(this)}>Duenios</button>
         </div>
         <div clas="card">

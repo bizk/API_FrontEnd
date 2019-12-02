@@ -19,7 +19,7 @@ export class ReclamoTab extends React.Component {
     <p class="barra_texto">En: {this.props.reclamo.ubicacion}</p>
   </div>))
     return (
-      <div class="m-1 flex px-4 pt-2 bg-secondary rounded ">
+      <div class="m-1 flex px-4 pt-2 bg-light rounded ">
         <div class="row">
           <div class="col-6 column">
             <div class="row">

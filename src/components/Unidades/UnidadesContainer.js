@@ -171,9 +171,9 @@ export default class UnidadesContainer extends React.Component {
             <div class="form-grup col-md-4 mt-2">
               <button type="submitLiberar" class="btn btn-primary btn-block" onClick={this.handleSubmitLiberar.bind(this)}>Liberar</button>
             </div>
-            <div class="form-grup col-md-4 mt-2">
+            {/*<div class="form-grup col-md-4 mt-2">
               <button type="submitHabitar" class="btn btn-primary btn-block" onClick={this.handleSubmitHabitar.bind(this)}>Habitar</button>
-            </div>
+            </div>*/}
           </div>
         </div>
         <UnidadList unidades={this.state.unidades}/>

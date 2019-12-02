@@ -32,7 +32,8 @@ export default class ReclamoContainer extends React.Component {
                         imagenes: response.data.imagenes
                     }
                ;
-                this.setState(state => ({
+              
+                              this.setState(state => ({
                     reclamos: newReclamo
                 }))
             }else{

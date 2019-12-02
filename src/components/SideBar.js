@@ -12,8 +12,6 @@ class SideBar extends React.Component {
        };
     }
 
-
-
   
 
     handleChildClick(argmnt) {

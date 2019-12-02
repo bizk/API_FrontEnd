@@ -50,9 +50,10 @@ export class ReclamoTab extends React.Component {
           <ImagenesPorReclamo key={'img'+this.props.reclamo.idReclamo} nroreclamo={this.props.reclamo.idReclamo}></ImagenesPorReclamo>
         </div>
       {
-        this.props.role === 'admin' ? (<div class="row p-2"> 
+        this.props.role === 'admin' ? (<div class="pb-2"> 
+            <h4>Opciones de administrador</h4>
            <CambiarEstadoReclamo nroreclamo = {this.props.reclamo.idReclamo}></CambiarEstadoReclamo> 
-        </div>):<div/>
+        </div>):<div class="p-2"/>
       }
       </div>
 

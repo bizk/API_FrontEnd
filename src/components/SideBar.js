@@ -5,7 +5,7 @@ class SideBar extends React.Component {
     constructor(props){
        super(props);
        this.state = {
-          edificios: [],
+          edificios: this.props.edificios,
            usuario : this.props.usr,
            edificiosUsuarioDuenio :  [],
            edificiosUsuarioInquilino : []
@@ -13,7 +13,7 @@ class SideBar extends React.Component {
     }
 
     async componentDidMount(){
-      this.fetchEdificios();
+      //this.fetchEdificios();
     }
 
     fetchEdificios(e) {
@@ -44,7 +44,7 @@ class SideBar extends React.Component {
     render() {
       return (
         <div class="col-2 hidden-md-down bg-dark">
-          {this.state.edificios.map(c=><EdificioSideTab handleChildClick={this.handleChildClick.bind(this)} key={c.id}
+          {this.props.edificios.map(c=><EdificioSideTab handleChildClick={this.handleChildClick.bind(this)} key={c.id}
                 edif={c}/>)}
         </div>
       );

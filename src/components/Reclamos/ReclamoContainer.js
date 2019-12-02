@@ -98,11 +98,11 @@ export default class ReclamoContainer extends React.Component {
         return (
             <div class="mt-2">
                 <div class="btn-group btn-group-toggle col-12">
-                    {this.props.role === 'user' ? (<button type="button" class="btn btn-secondary" onClick={this.handleMisReclamos.bind(this)}>Mis reclamos</button>): 
+                    {this.props.role === 'usr' ? (<button type="button" class="btn btn-secondary" onClick={this.handleMisReclamos.bind(this)}>Mis reclamos</button>): 
                     (<button type="button" class="btn btn-secondary" onClick={this.handleReclamosPorPersona.bind(this)}>Reclamos Por Persona</button>) }
                     <button type="button" class="btn btn-secondary" onClick={this.handleReclamosMisEdificios.bind(this)}>Reclamos en este edificio</button>
                     <button type="button" class="btn btn-secondary" onClick={this.handleReclamoPorNumero.bind(this)}>Buscar reclamo por numero</button>
-                    {this.props.role ==='user' ? (<button type="button" class="btn btn-primary" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar reclamo en éste edificio</button> ) :
+                    {this.props.role ==='usr' ? (<button type="button" class="btn btn-primary" onClick={this.toggleAgregarReclamoModal.bind(this)}>Agregar reclamo en éste edificio</button> ) :
                     <div/>}
                 </div>
                 {form}

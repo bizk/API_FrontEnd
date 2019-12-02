@@ -27,11 +27,30 @@ class App extends React.Component {
       isReclamos: false,
       isPersonas: false,
       userName : props.userName,
-      role: props.role
+      role: props.role,
+      edificios: []
     };
   }
 
 
+  componentDidMount(){
+    axios.get('http://localhost:8080/apiRest/getUsrInfo').then(response => {    
+     const edif = response.data.map(e => {
+        return {
+          id : e.idEdif,
+          direccion : e.direccion,
+          nombre : e.nombre,
+          inquilinoEn : e.inquilino,
+          duenioEn : e.duenio
+        }})
+
+        this.setState({
+          edificios : edif
+        })
+      })
+
+
+  }
   //Buttons handlers
   handleClickReclamosTab(e) {
     this.setState(state => ({ tab: "reclamosTab", isUnidades: false, isReclamos: true, isPersonas: false}));
@@ -44,7 +63,7 @@ class App extends React.Component {
   }
 
   handleEdifSideBarChange(newEdif) {
-    this.setState({ edif: {codigo: newEdif.id, nombre: newEdif.nombre, direccion: newEdif.direccion } });
+    this.setState({ edif: {codigo: newEdif.id, nombre: newEdif.nombre, direccion: newEdif.direccion, inquilinoEn: newEdif.inquilinoEn, duenioEn: newEdif.duenioEn} });
   }
 
   render() {
@@ -90,7 +109,7 @@ class App extends React.Component {
 
           <div class="container-fluid">
             <div class="row justify-content-center">
-              <SideBar handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> 
+              <SideBar edificios= {this.state.edificios} handleEdifSideBarChange={this.handleEdifSideBarChange.bind(this)} /> 
               <div class="col-10 fill">
                 {bodyContainer}
               </div>

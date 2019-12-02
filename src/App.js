@@ -6,7 +6,9 @@ import SideBar from './components/SideBar.js'
 
 import axios from "axios";
 
-import { Home, Users, MessageSquare } from "react-feather";
+import Login from "./Login";
+
+import { Home, Users, MessageSquare, LogOut } from "react-feather";
 
 // import UnidadTab from './Components.js';
 
@@ -30,7 +32,7 @@ class App extends React.Component {
       role: props.role,
       bodyContainer: <div></div>
     };
-  }
+   }
 
 
   //Buttons handlers
@@ -42,6 +44,11 @@ class App extends React.Component {
   }
   handleClickPersonasTab(e) {
     this.setState(state => ({ tab: "personasTab", isUnidades: false, isReclamos: false, isPersonas: true}));
+  }
+  handleClickSalir(e){
+    axios.post("http://localhost:8080/API_ApiRest/logOff").then(res => console.log(res)).catch(error=> console.log(error));
+    this.setState(state => ({userName: "", role: ""}));
+    this.handleClickReclamosTab();
   }
 
   handleEdifSideBarChange(newEdif) {

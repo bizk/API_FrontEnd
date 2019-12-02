@@ -34,7 +34,8 @@ class App extends React.Component {
 
 
   componentDidMount(){
-    axios.get('http://localhost:8080/apiRest/getUsrInfo').then(response => {    
+    if(this.state.role =='usr') {
+      axios.get('http://localhost:8080/apiRest/getUsrInfo').then(response => {    
      const edif = response.data.map(e => {
         return {
           id : e.idEdif,
@@ -48,6 +49,23 @@ class App extends React.Component {
           edificios : edif
         })
       })
+    } else {
+      axios.get("http://localhost:8080/apiRest/getEdificios").then(response => {
+        //Array
+        const newEdificios = response.data.map(c => {
+          return {
+            id: c.codigo,
+            direccion: c.direccion,
+            nombre: c.nombre,
+          };
+        });
+
+        this.setState({
+          edificios: newEdificios,
+        });
+      }).catch(error=> console.log(error));
+    }
+
 
 
   }

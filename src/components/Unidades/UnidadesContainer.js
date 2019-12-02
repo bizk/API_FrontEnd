@@ -15,9 +15,9 @@ export default class UnidadesContainer extends React.Component {
     }
   }
 
+
   componentDidMount() {
     this.fetchUnidades();
-    console.log(this.state.unidades);
   }
 
   fetchUnidades(e){
@@ -63,8 +63,14 @@ export default class UnidadesContainer extends React.Component {
     axios.post(url, null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
   }
   genericGetFetch3Param(url){
-    const param = {codigo: this.state.edificio}
-    axios.get(url+"?codigo="+this.state.edificio+"&piso="+this.state.piso+"&numero="+this.state.numero).then(response => {
+    //const param = {codigo: this.state.edificio}
+    const params = {
+      codigo: this.state.edificio,
+      piso: this.state.piso,
+      numero: this.state.numero,
+      documento: this.state.dni,
+    }
+    axios.get(url, {params}).then(response => {
       //Array
       const newUnidades = response.data.map(c => {
         return {

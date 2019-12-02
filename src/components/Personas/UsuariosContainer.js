@@ -13,8 +13,10 @@ export default class UsuariosContainer extends React.Component {
       edificio: props.edificio,
       piso: "",
       numero: "",
+      fakePersona_dni: "",
+      fakePersona_nombre: ""
+      }
     }
-  }
 
   componentDidMount() {
     this.fetchHabitantes();
@@ -25,7 +27,7 @@ export default class UsuariosContainer extends React.Component {
       codigo: this.state.edificio,
       piso: this.state.piso,
       numero: this.state.numero,
-    }
+    };
     axios.get(url, {params}).then(response => {
       //Array
       let newPersonas = response.data.map(c => {
@@ -75,6 +77,14 @@ export default class UsuariosContainer extends React.Component {
   handleChangeDni(event){
     this.setState({dni: event.target.value})
   }
+  handleChangeFakePersonaDni(event){
+    this.setState({fakePersona_dni : event.target.value});
+    console.log(this.state.fakePersona_dni);
+  }
+  handleChangeFakePersonaName(event){
+    this.setState({fakePersona_nombre :  event.target.value});
+    console.log(this.state.fakePersona_nombre);
+  }
 
   handleGetDuenios(event) {
     this.genericGetFetch2Param("http://localhost:8080/API_ApiRest/dueniosPorUnidad");
@@ -101,6 +111,19 @@ export default class UsuariosContainer extends React.Component {
   handleClickHabitantesEdif(e){
     this.fetchHabitantes();
   }
+  handleAddPersona(e){
+      const params = {
+        documento: this.state.fakePersona_dni,
+        nombre: this.state.fakePersona_nombre,
+      }
+      axios.post("http://localhost:8080/API_ApiRest/agregarPersona", null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
+  }
+  handleDeletePersona(e){
+      const params = {
+        documento: this.state.fakePersona_dni,
+      }
+      axios.post("http://localhost:8080/API_ApiRest/eliminarPersona", null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
+  }
 
   render() {
     return (
@@ -112,6 +135,36 @@ export default class UsuariosContainer extends React.Component {
         </div>
         <div clas="card">
           <div class="card-header mt-2">Herramientas</div>
+          <div class="form-row card-body">
+              <div class="form-group col-md-3">
+                <label>Documento</label>
+                <input type="text"
+                       class="form-control"
+                       value={this.state.fakePersona_dni}
+                       onChange={this.handleChangeFakePersonaDni.bind(this)}
+                       placeholder="Documento" />
+              </div>
+              <div class="form-group col-md-3">
+                <label>Nombre</label>
+                <input type="text"
+                    class="form-control"
+                    value={this.state.fakePersona_nombre}
+                    onChange={this.handleChangeFakePersonaName.bind(this)}
+                    name="inputNumero"
+                    placeholder="Nombre" />
+              </div>
+              <div class="form-group col-md-3">
+                <label></label>
+                <button type="button" class="btn btn-info btn-block"
+                  onClick={this.handleAddPersona.bind(this)}>Agregar</button>
+              </div>
+              <div class="form-group col-md-3">
+                <label></label>
+                <button type="button" class="btn btn-danger btn-block"
+                  onClick={this.handleDeletePersona.bind(this)}>Eliminar </button>
+              </div>
+            </div>
+          <div class="card-footer"/>
           <div class="form-row card-body">
             <div class="form-group col-md-6">
               <label for="imputPiso ">Piso</label>
@@ -131,14 +184,16 @@ export default class UsuariosContainer extends React.Component {
                   placeholder="Numero" />
             </div>
             <div class="form-grup col-md-6">
-              <button type="submitDueños" class="btn btn-info btn-block"
+              <button type="button" class="btn btn-primary btn-block"
                 onClick={this.handleGetDuenios.bind(this)}>Ver dueños</button>
             </div>
             <div class="form-grup col-md-6">
-              <button type="submitInquilinos" class="btn btn-info btn-block"
+              <button type="button" class="btn btn-primary btn-block"
                 onClick={this.handleGetInquilinos.bind(this)}>Ver inquilinos</button>
             </div>
           </div>
+          <div class="card-footer"/>
+
         </div>
         <UsuarioList personas={this.state.personas}/>
       </div>

@@ -17,12 +17,16 @@ class Home extends React.Component {
    this.setState({userName: usr, role: role});
  }
 
+ handleLogOff() {
+   this.setState({userName: "", role:" "});
+ }
+
   render() {
     return (
       <div>
         {(this.state.username === "" || this.state.role === "") ?
            <Login handleUsrChange={this.handleUsrChange.bind(this)}/> :
-           <App role={this.state.role} userName={this.state.userName}/>}
+           <App role={this.state.role} userName={this.state.userName} handleLogOff={this.handleLogOff.bind(this)}/>}
       </div>
     );
   }

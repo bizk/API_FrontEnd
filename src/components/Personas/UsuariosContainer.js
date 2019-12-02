@@ -87,17 +87,17 @@ export default class UsuariosContainer extends React.Component {
   }
 
   handleGetDuenios(event) {
-    this.genericGetFetch2Param("http://localhost:8080/API_ApiRest/dueniosPorUnidad");
+    this.genericGetFetch2Param("http://localhost:8080/apiRest/dueniosPorUnidad");
     event.preventDefault();
   }
   handleGetInquilinos(event) {
-    this.genericGetFetch2Param("http://localhost:8080/API_ApiRest/inquilinosPorUnidad");
+    this.genericGetFetch2Param("http://localhost:8080/apiRest/inquilinosPorUnidad");
     event.preventDefault();
   }
 
-  fetchHabilitados(e) {this.genericGetFetchParam("http://localhost:8080/API_ApiRest/habilitadosPorEdificio");}
-  fetchHabitantes(e) {this.genericGetFetchParam("http://localhost:8080/API_ApiRest/habitantesPorEdificio");}
-  fetchDuenios(e) {this.genericGetFetchParam("http://localhost:8080/API_ApiRest/dueniosPorEdificio");}
+  fetchHabilitados(e) {this.genericGetFetchParam("http://localhost:8080/apiRest/habilitadosPorEdificio");}
+  fetchHabitantes(e) {this.genericGetFetchParam("http://localhost:8080/apiRest/habitantesPorEdificio");}
+  fetchDuenios(e) {this.genericGetFetchParam("http://localhost:8080/apiRest/dueniosPorEdificio");}
 
   handleClickHabitantes(e) {
     this.fetchHabitantes();
@@ -116,13 +116,13 @@ export default class UsuariosContainer extends React.Component {
         documento: this.state.fakePersona_dni,
         nombre: this.state.fakePersona_nombre,
       }
-      axios.post("http://localhost:8080/API_ApiRest/agregarPersona", null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
+      axios.post("http://localhost:8080/apiRest/agregarPersona", null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
   }
   handleDeletePersona(e){
       const params = {
         documento: this.state.fakePersona_dni,
       }
-      axios.post("http://localhost:8080/API_ApiRest/eliminarPersona", null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
+      axios.post("http://localhost:8080/apiRest/eliminarPersona", null, {params}).then(res => console.log(res)).catch(error=> console.log(error));
   }
 
   render() {
